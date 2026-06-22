@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DON VITO – Navbar Fusion (1 + 2 + 4)</title>
+<!-- Preview: Google-Fonts-CDN + Unsplash nur zum Vergleichen. Production: next/font self-hosted, Bilder optimiert/lazy. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --tomato:#E2331E; --tomato-2:#ff5a3c; --mustard:#F4A300;
+    --neon:#C6FF00; --ink:#0f0e0c; --line:rgba(255,255,255,.12); --ok:#39d353;
+  }
+  html{scroll-behavior:smooth}
+  body{font-family:'Inter',system-ui,sans-serif;background:#0d0c0b;color:#fff;-webkit-font-smoothing:antialiased}
+  img{max-width:100%;height:auto;display:block}
+  a{text-decoration:none;color:inherit}
+  button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
+  ul{list-style:none}
+  .touch{min-height:44px;min-width:44px}
+  .ic{width:1.05em;height:1.05em;flex:0 0 auto;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;fill:none}
+
+  /* ---------- page chrome ---------- */
+  .page-head{padding:clamp(1.75rem,4vw,3rem) 1.25rem 1.25rem;text-align:center;
+    background:radial-gradient(120% 100% at 50% 0%,#241f1a,#0d0c0b 70%);border-bottom:1px solid var(--line)}
+  .page-head .kicker{letter-spacing:.3em;text-transform:uppercase;font-size:.7rem;color:var(--mustard);font-weight:700}
+  .page-head h1{font-family:'Anton';font-weight:400;letter-spacing:.01em;font-size:clamp(1.5rem,1rem+3vw,2.4rem);margin:.45rem 0 .3rem;text-transform:uppercase}
+  .page-head p{max-width:62ch;margin:0 auto;color:#bdb6ad;font-size:clamp(.92rem,.9rem+.3vw,1.02rem)}
+
+  .stage{position:relative;min-height:100svh;display:flex;flex-direction:column;overflow:hidden}
+  .stage__bg{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center;
+    background-image:linear-gradient(180deg,rgba(13,12,11,.35),rgba(13,12,11,.9)),url('https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=1700&q=80')}
+  .stage__center{position:relative;z-index:5;margin:auto;text-align:center;padding:1.25rem;max-width:min(900px,92vw)}
+  .stage__center h2{font-family:'Anton';font-weight:400;text-transform:uppercase;font-size:clamp(2.2rem,1rem+7vw,5rem);line-height:.95;letter-spacing:.005em}
+  .stage__center h2 em{color:var(--tomato);font-style:normal}
+  .stage__center p{color:#e0dacf;margin-top:.85rem;font-size:clamp(1rem,.95rem+.4vw,1.18rem);max-width:54ch;margin-inline:auto}
+  .hero-cta{display:flex;gap:.7rem;justify-content:center;flex-wrap:wrap;margin-top:1.4rem}
+
+  .stage__tag{position:absolute;left:1rem;bottom:1rem;z-index:40;display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;
+    background:rgba(0,0,0,.55);backdrop-filter:blur(8px);border:1px solid var(--line);padding:.55rem .8rem;border-radius:12px;font-size:.8rem;max-width:calc(100% - 2rem)}
+  .stage__tag b{color:#fff} .stage__tag span{color:#c9c2b8}
+  .toggle{margin-left:auto;border:1px solid var(--line);border-radius:999px;padding:.4rem .7rem;font-size:.72rem;color:#fff;background:rgba(255,255,255,.06)}
+  .toggle:hover{background:rgba(255,255,255,.14)}
+
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--ok);position:relative;flex:0 0 auto}
+  .dot::after{content:"";position:absolute;inset:-5px;border-radius:50%;border:2px solid var(--ok);opacity:.5;animation:pulse 2.6s cubic-bezier(.4,0,.2,1) infinite}
+  @keyframes pulse{0%{transform:scale(.7);opacity:.55}70%,100%{transform:scale(1.5);opacity:0}}
+
+  /* ===================== TICKER (from Option 2) ===================== */
+  .ticker{position:fixed;top:0;left:0;right:0;z-index:60;overflow:hidden;background:rgba(10,9,8,.92);
+    backdrop-filter:blur(8px);border-bottom:1px solid rgba(198,255,0,.22);transition:transform .45s cubic-bezier(.22,.61,.36,1),opacity .45s}
+  .ticker.hide{transform:translateY(-100%);opacity:0}
+  .ticker__track{display:inline-flex;gap:2.5rem;white-space:nowrap;padding:.4rem 0;animation:marq 26s linear infinite;will-change:transform}
+  .ticker:hover .ticker__track{animation-play-state:paused}
+  .ticker__track span{font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;font-weight:700;color:#e8e3d8;display:inline-flex;align-items:center;gap:.55rem}
+  .ticker__track span::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--neon);box-shadow:0 0 8px rgba(198,255,0,.8)}
+  @keyframes marq{to{transform:translateX(-50%)}}
+
+  /* ===================== MAIN BAR (glass from 1 + split from 4) ===================== */
+  .nav{position:fixed;top:33px;left:0;right:0;z-index:50;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:1.25rem;
+    padding:1rem clamp(1rem,3vw,2.5rem);
+    transition:top .45s cubic-bezier(.22,.61,.36,1),padding .45s cubic-bezier(.22,.61,.36,1),background .45s,box-shadow .45s,border-color .45s;
+    border-bottom:1px solid transparent}
+  .nav.solid{top:0;background:rgba(18,16,14,.72);backdrop-filter:blur(18px) saturate(1.3);
+    border-bottom:1px solid var(--line);box-shadow:0 12px 40px rgba(0,0,0,.4);padding-top:.6rem;padding-bottom:.6rem}
+
+  /* oversize editorial wordmark (from 4) with letter-settle */
+  .brand{display:flex;align-items:center;gap:.65rem}
+  .brand .mark{width:42px;height:42px;border-radius:11px;overflow:hidden;flex:0 0 auto;box-shadow:0 6px 18px rgba(226,51,30,.4);transition:transform .45s cubic-bezier(.22,.61,.36,1)}
+  .nav.solid .brand .mark{transform:scale(.85)}
+  .brand .mark img{width:100%;height:100%;object-fit:cover}
+  .brand .word{font-family:'Anton';font-weight:400;text-transform:uppercase;font-size:clamp(1.5rem,1rem+1.8vw,2.1rem);line-height:.85;letter-spacing:.012em;display:flex;flex-direction:column}
+  .nav.solid .brand .word{font-size:clamp(1.3rem,1rem+1.2vw,1.7rem)}
+  .brand .word .l1{color:#fff}
+  .brand .word .l2{color:var(--tomato);font-size:.62em;letter-spacing:.22em}
+  .brand .ch{display:inline-block;transform:translateY(10px);opacity:0;animation:drop .55s cubic-bezier(.22,.61,.36,1) forwards}
+  @keyframes drop{to{transform:none;opacity:1}}
+
+  /* center nav + mega-menu (from 4) + underline-sweep (from 1) */
+  .links{display:flex;gap:.15rem;justify-content:center}
+  .links>li{position:relative}
+  .links>li>a{position:relative;display:inline-flex;align-items:center;gap:.3rem;padding:.6rem .9rem;border-radius:10px;font-weight:500;font-size:.95rem;color:#e9e3d9;transition:color .25s}
+  .links>li>a::after{content:"";position:absolute;left:.9rem;right:.9rem;bottom:.4rem;height:2px;background:var(--tomato);transform:scaleX(0);transform-origin:left;transition:transform .35s cubic-bezier(.22,.61,.36,1)}
+  .links>li>a:hover{color:#fff} .links>li>a:hover::after{transform:scaleX(1)}
+  .caret{width:.6em;height:.6em;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg) translateY(-2px);opacity:.7;transition:transform .3s}
+  .links>li:hover .caret{transform:rotate(225deg) translateY(-1px)}
+
+  .mega{position:absolute;top:calc(100% + 10px);left:50%;transform:translateX(-50%) translateY(8px);
+    width:min(600px,88vw);background:rgba(20,18,16,.96);backdrop-filter:blur(18px);border:1px solid var(--line);border-radius:18px;padding:.6rem;
+    display:grid;grid-template-columns:1fr 1fr;gap:.3rem;opacity:0;pointer-events:none;
+    transition:opacity .28s,transform .28s cubic-bezier(.22,.61,.36,1);box-shadow:0 24px 60px rgba(0,0,0,.5)}
+  .links>li:hover .mega{opacity:1;pointer-events:auto;transform:translateX(-50%)}
+  .mega a{display:flex;gap:.7rem;align-items:center;font-weight:600;font-size:.92rem;color:#eee;padding:.45rem;border-radius:12px;transition:background .2s}
+  .mega a:hover{background:rgba(255,255,255,.07)}
+  .mega .thumb{width:46px;height:46px;border-radius:10px;overflow:hidden;flex:0 0 auto}
+  .mega .thumb img{width:100%;height:100%;object-fit:cover}
+  .mega small{display:block;color:#9a948a;font-weight:400;font-size:.76rem;margin-top:1px}
+
+  /* right cluster */
+  .right{display:flex;align-items:center;gap:.6rem}
+  .status{display:flex;align-items:center;gap:.45rem;font-size:.8rem;color:#dcf3d8;background:rgba(57,211,83,.12);border:1px solid rgba(57,211,83,.3);padding:.45rem .7rem;border-radius:999px}
+  .call{display:flex;align-items:center;gap:.45rem;padding:.6rem .85rem;border-radius:999px;border:1px solid var(--line);color:#fff;font-weight:600;font-size:.9rem;transition:background .25s,border-color .25s}
+  .call:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.3)}
+  /* CTA: tomato (from 1) + neo-brutalist offset (from 4) + subtle glow (from 2) */
+  .order{display:flex;align-items:center;gap:.5rem;padding:.72rem 1.2rem;border-radius:999px;font-weight:800;color:#fff;
+    background:linear-gradient(135deg,var(--tomato),var(--tomato-2));
+    box-shadow:4px 4px 0 rgba(120,18,8,.9),0 8px 26px rgba(226,51,30,.35);
+    transition:transform .3s cubic-bezier(.22,.61,.36,1),box-shadow .3s}
+  .order:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 rgba(120,18,8,.9),0 14px 34px rgba(226,51,30,.55)}
+  .order:active{transform:translate(2px,2px);box-shadow:1px 1px 0 rgba(120,18,8,.9),0 6px 16px rgba(226,51,30,.4)}
+
+  /* mobile */
+  .burger{display:none;flex-direction:column;gap:5px;padding:11px;border-radius:10px;color:#fff}
+  .burger span{width:22px;height:2px;background:currentColor;transition:.3s;display:block}
+  .burger.x span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  .burger.x span:nth-child(2){opacity:0}
+  .burger.x span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+  .drawer{position:fixed;top:0;right:0;bottom:0;z-index:70;width:min(86vw,360px);
+    background:rgba(16,14,12,.98);backdrop-filter:blur(20px);border-left:1px solid var(--line);
+    padding:5rem 1.25rem 1.5rem;display:flex;flex-direction:column;gap:.3rem;
+    transform:translateX(100%);transition:transform .4s cubic-bezier(.22,.61,.36,1)}
+  .drawer.open{transform:none}
+  .drawer a{padding:.95rem 1rem;border-radius:12px;font-weight:600;font-size:1.05rem;color:#eee}
+  .drawer a:hover{background:rgba(255,255,255,.06)}
+  .drawer .order{justify-content:center;margin-top:.8rem}
+  .scrim{position:fixed;inset:0;z-index:65;background:rgba(0,0,0,.5);opacity:0;pointer-events:none;transition:opacity .35s}
+  .scrim.open{opacity:1;pointer-events:auto}
+
+  @media (max-width:1024px){
+    .links,.status,.call{display:none}
+    .nav{grid-template-columns:auto 1fr auto}
+    .nav .links{display:none}
+    .burger{display:flex}
+  }
+  @media (max-width:520px){
+    .order{font-size:.82rem;padding:.62rem .95rem}
+    .ticker__track{animation-duration:18s}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+  .foot{padding:2.5rem 1.25rem 3.5rem;text-align:center;color:#8a847b;font-size:.85rem;background:#0d0c0b;border-top:1px solid rgba(255,255,255,.06)}
+  .foot b{color:#cfc8bd}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <g id="i-phone"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.1 9.9a16 16 0 0 0 6 6l1.27-1.26a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></g>
+  <g id="i-bag"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></g>
+</defs></svg>
+
+<header class="page-head">
+  <div class="kicker">DON VITO · Pizza · Döner · Grill · Münster</div>
+  <h1>Navbar – Fusion 1 + 2 + 4</h1>
+  <p>Dunkle Glas-Bar (1) · Neon-Marquee-Ticker (2) · Oversize-Wordmark, Split-Layout &amp; Mega-Menü (4). Scrolle: Ticker fährt ein, Bar wird solide &amp; schrumpft. „Scroll-State" simuliert das manuell. Fenster schmaler ziehen = Mobil-Drawer.</p>
+</header>
+
+<div class="ticker" id="ticker"><div class="ticker__track">
+  <span>0% Provision · direkt bestellen</span><span>Frisch vom Drehspieß</span><span>Halal</span><span>Vegan-Optionen</span><span>Lieferung in ganz Münster</span><span>Täglich 11–23 Uhr</span>
+  <span>0% Provision · direkt bestellen</span><span>Frisch vom Drehspieß</span><span>Halal</span><span>Vegan-Optionen</span><span>Lieferung in ganz Münster</span><span>Täglich 11–23 Uhr</span>
+</div></div>
+
+<nav class="nav" id="nav">
+  <a class="brand" href="#">
+    <span class="mark"><img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=140&q=80" alt="Pizza"></span>
+    <span class="word"><span class="l1" id="w1"></span><span class="l2" id="w2"></span></span>
+  </a>
+
+  <ul class="links">
+    <li>
+      <a href="#">Speisekarte <i class="caret"></i></a>
+      <div class="mega">
+        <a href="#"><span class="thumb"><img src="https://images.unsplash.com/photo-1561758033-d89a9ad46330?auto=format&fit=crop&w=140&q=80" alt="Döner"></span><span>Döner &amp; Dürüm<small>Tasche · Teller · Box · Lahmacun</small></span></a>
+        <a href="#"><span class="thumb"><img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=140&q=80" alt="Pizza"></span><span>Pizza &amp; XXL-Blech<small>klassisch &amp; Familien-Format</small></span></a>
+        <a href="#"><span class="thumb"><img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=140&q=80" alt="Burger"></span><span>Burger &amp; Grill<small>Smash · Schnitzel · Gyros</small></span></a>
+        <a href="#"><span class="thumb"><img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=140&q=80" alt="Pasta"></span><span>Pasta &amp; Aufläufe<small>frisch überbacken</small></span></a>
+        <a href="#"><span class="thumb"><img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=140&q=80" alt="Salat"></span><span>Salate<small>frisch &amp; leicht</small></span></a>
+        <a href="#"><span class="thumb"><img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?auto=format&fit=crop&w=140&q=80" alt="Getränke"></span><span>Getränke<small>kalt &amp; erfrischend</small></span></a>
+      </div>
+    </li>
+    <li><a href="#">Angebote</a></li>
+    <li><a href="#">Partyservice</a></li>
+    <li><a href="#">Über uns</a></li>
+    <li><a href="#">Kontakt</a></li>
+  </ul>
+
+  <div class="right">
+    <span class="status"><span class="dot"></span>Jetzt geöffnet · bis 23:00</span>
+    <a class="call touch" href="tel:+4925198765 4"><svg class="ic" viewBox="0 0 24 24"><use href="#i-phone"/></svg>Anrufen</a>
+    <a class="order touch" href="#"><svg class="ic" viewBox="0 0 24 24"><use href="#i-bag"/></svg>Bestellen</a>
+    <button class="burger touch" id="burger" aria-label="Menü öffnen" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer">
+  <a href="#">Speisekarte</a><a href="#">Angebote</a><a href="#">Partyservice</a><a href="#">Über uns</a><a href="#">Kontakt</a>
+  <a class="call touch" style="justify-content:center" href="tel:+4925198765 4"><svg class="ic" viewBox="0 0 24 24"><use href="#i-phone"/></svg>0251 / 98 76 54</a>
+  <a class="order touch" href="#"><svg class="ic" viewBox="0 0 24 24"><use href="#i-bag"/></svg>Jetzt bestellen</a>
+</aside>
+
+<section class="stage" id="stage">
+  <div class="stage__bg"></div>
+  <div class="stage__center">
+    <h2>Frisch. Schnell.<br><em>Direkt bestellen.</em></h2>
+    <p>Ohne Lieferando-Aufschlag — frisch vom Grill &amp; aus dem Steinofen, geliefert in ganz Münster.</p>
+    <div class="hero-cta">
+      <a class="order touch" href="#"><svg class="ic" viewBox="0 0 24 24"><use href="#i-bag"/></svg>Jetzt bestellen</a>
+      <a class="call touch" href="tel:+4925198765 4" style="display:inline-flex"><svg class="ic" viewBox="0 0 24 24"><use href="#i-phone"/></svg>0251 / 98 76 54</a>
+    </div>
+  </div>
+  <div class="stage__tag">
+    <b>Fusion 1 + 2 + 4</b>
+    <span>· Glas-Bar · Neon-Ticker · Oversize-Wordmark · Mega-Menü · Neo-Brutalist-CTA</span>
+    <button class="toggle" id="toggle">Scroll-State</button>
+  </div>
+</section>
+
+<footer class="foot">
+  <p><b>DON VITO</b> — fiktives Demo · Daten Platzhalter · Bilder: Unsplash (Preview)</p>
+  <p style="margin-top:.4rem">Passt der Mix? Sag „Freigabe Navbar" (oder Feinwünsche: Farbe, Ticker-Inhalt, Logo-Stil) — dann finalisiere ich sie Vercel-ready + in Framer und wir gehen zur Hero-Sektion.</p>
+</footer>
+
+<script>
+  // letter-settle wordmark (DON / VITO)
+  function fill(id,txt,base){const el=document.getElementById(id);[...txt].forEach((c,i)=>{const s=document.createElement('span');s.className='ch';s.textContent=c;s.style.animationDelay=(base+i*0.05)+'s';el.appendChild(s);});}
+  fill('w1','DON',0.2); fill('w2','VITO',0.45);
+
+  const nav=document.getElementById('nav'), ticker=document.getElementById('ticker');
+  function onScroll(){
+    const y=window.scrollY;
+    if(y>40){nav.classList.add('solid');ticker.classList.add('hide');}
+    else{nav.classList.remove('solid');ticker.classList.remove('hide');}
+  }
+  window.addEventListener('scroll',onScroll,{passive:true}); onScroll();
+
+  // manual scroll-state preview
+  document.getElementById('toggle').addEventListener('click',()=>{
+    nav.classList.toggle('solid'); ticker.classList.toggle('hide');
+  });
+
+  // mobile drawer
+  const burger=document.getElementById('burger'),drawer=document.getElementById('drawer'),scrim=document.getElementById('scrim');
+  function setMenu(open){burger.classList.toggle('x',open);drawer.classList.toggle('open',open);scrim.classList.toggle('open',open);burger.setAttribute('aria-expanded',open);document.body.style.overflow=open?'hidden':'';}
+  burger.addEventListener('click',()=>setMenu(!drawer.classList.contains('open')));
+  scrim.addEventListener('click',()=>setMenu(false));
+  drawer.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>setMenu(false)));
+</script>
+</body>
+</html>
