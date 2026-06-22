@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DON VITO – Speisekarte: 5 weitere Optionen (Advanced FX)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{--tomato:#E2331E;--tomato-2:#ff5a3c;--mustard:#F4A300;--card:#16130f;--line:rgba(255,255,255,.1);--ok:#39d353}
+  html{scroll-behavior:smooth}
+  body{font-family:'Inter',system-ui,sans-serif;background:#0d0c0b;color:#fff;-webkit-font-smoothing:antialiased}
+  img{max-width:100%;height:auto;display:block}
+  a{text-decoration:none;color:inherit}button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}ul{list-style:none}
+  .touch{min-height:44px;min-width:44px}
+  .ic{width:1.05em;height:1.05em;flex:0 0 auto;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;fill:none}
+
+  .page-head{padding:clamp(1.75rem,4vw,3rem) 1.25rem 1.25rem;text-align:center;background:radial-gradient(120% 100% at 50% 0%,#241f1a,#0d0c0b 70%);border-bottom:1px solid var(--line)}
+  .page-head .kicker{letter-spacing:.3em;text-transform:uppercase;font-size:.7rem;color:var(--mustard);font-weight:700}
+  .page-head h1{font-family:'Anton';font-weight:400;font-size:clamp(1.5rem,1rem+3vw,2.4rem);margin:.45rem 0 .3rem;text-transform:uppercase}
+  .page-head p{max-width:64ch;margin:0 auto;color:#bdb6ad;font-size:clamp(.92rem,.9rem+.3vw,1.02rem)}
+  .legend{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;margin-top:1rem}
+  .legend a{font-size:.78rem;padding:.45rem .8rem;border:1px solid var(--line);border-radius:999px;color:#e7e1d8;transition:.25s}
+  .legend a:hover{border-color:var(--mustard);color:#fff;transform:translateY(-2px)}
+
+  .sec{padding:clamp(2.5rem,5vw,4.5rem) clamp(1rem,4vw,3rem);border-bottom:1px solid rgba(255,255,255,.06);position:relative}
+  .sec__head{max-width:1200px;margin:0 auto 1.6rem}
+  .sec__head h2{font-family:'Anton';font-weight:400;text-transform:uppercase;font-size:clamp(1.8rem,1rem+4vw,3.2rem);line-height:.95}
+  .sec__head h2 em{color:var(--tomato);font-style:normal}
+  .sec__head .tax{font-size:.82rem;color:#9a948a;max-width:52ch;margin-top:.4rem}
+  .optbadge{position:absolute;left:1rem;top:1rem;z-index:5;display:flex;gap:.5rem;align-items:center;background:rgba(0,0,0,.5);border:1px solid var(--line);padding:.4rem .7rem;border-radius:10px;font-size:.78rem}
+  .opt-no{background:var(--mustard);color:#1a1304;font-weight:800;border-radius:7px;padding:.1rem .45rem}
+  .wrap{max-width:1200px;margin:0 auto}
+
+  .tag{font-size:.66rem;font-weight:700;padding:.16rem .45rem;border-radius:6px}
+  .tag.veg{background:rgba(57,211,83,.16);color:#8ef0a4}.tag.vegan{background:rgba(57,211,83,.22);color:#aef7be}
+  .tag.halal{background:rgba(244,163,0,.16);color:#ffd98a}.tag.hot{background:rgba(226,51,30,.18);color:#ff9b8a}
+  .badge{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:6px;font-size:.66rem;font-weight:700;background:rgba(255,255,255,.1);color:#cfc8bd}
+  .price{font-family:'Anton';font-weight:400;color:#fff;font-size:1.3rem;white-space:nowrap}
+  .add{display:inline-flex;align-items:center;justify-content:center;gap:.35rem;padding:.5rem .8rem;border-radius:999px;font-weight:700;font-size:.85rem;color:#fff;background:linear-gradient(135deg,var(--tomato),var(--tomato-2));box-shadow:0 6px 16px rgba(226,51,30,.35);transition:transform .2s cubic-bezier(.22,.61,.36,1),box-shadow .2s}
+  .add:active{transform:scale(.92)}
+  .rv{opacity:0;transform:translateY(22px);transition:opacity .65s cubic-bezier(.22,.61,.36,1),transform .65s cubic-bezier(.22,.61,.36,1)}
+  .rv.in{opacity:1;transform:none}
+
+  /* ===== OPT 6: 3D TILT + CURSOR SPOTLIGHT ===== */
+  #m6{background:radial-gradient(140% 120% at 50% -10%,#1a1611,#0d0c0b 60%)}
+  .tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr));gap:1.2rem}
+  .tilt{position:relative;border-radius:20px;background:var(--card);border:1px solid var(--line);overflow:hidden;transform-style:preserve-3d;transition:transform .25s cubic-bezier(.22,.61,.36,1),box-shadow .25s;will-change:transform}
+  .tilt::before{content:"";position:absolute;inset:0;z-index:3;pointer-events:none;opacity:0;transition:opacity .3s;
+    background:radial-gradient(220px 220px at var(--mx,50%) var(--my,50%),rgba(255,255,255,.18),transparent 60%)}
+  .tilt:hover::before{opacity:1}
+  .tilt:hover{box-shadow:0 30px 60px rgba(0,0,0,.5);border-color:rgba(255,255,255,.22)}
+  .tilt .im{aspect-ratio:16/11;overflow:hidden;transform:translateZ(30px)}
+  .tilt .im img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+  .tilt:hover .im img{transform:scale(1.1)}
+  .tilt .bd{padding:1rem;display:flex;flex-direction:column;gap:.5rem;transform:translateZ(45px)}
+  .tilt .bd .top{display:flex;justify-content:space-between;align-items:start;gap:.5rem}
+  .tilt h3{font-size:1.08rem;font-weight:700}
+  .tilt p{color:#a89f93;font-size:.85rem}
+  .tilt .f{display:flex;justify-content:space-between;align-items:center;margin-top:.3rem}
+  .tags{display:flex;gap:.3rem;flex-wrap:wrap}
+
+  /* ===== OPT 7: FLIP CARDS ===== */
+  .fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:1.2rem}
+  .flip{perspective:1200px;height:340px;cursor:pointer}
+  .flip__in{position:relative;width:100%;height:100%;transition:transform .7s cubic-bezier(.5,.05,.2,1);transform-style:preserve-3d}
+  .flip.on .flip__in,.flip:hover .flip__in{transform:rotateY(180deg)}
+  .flip__f,.flip__b{position:absolute;inset:0;border-radius:20px;overflow:hidden;backface-visibility:hidden;border:1px solid var(--line)}
+  .flip__f img{width:100%;height:100%;object-fit:cover}
+  .flip__f .cap{position:absolute;left:0;right:0;bottom:0;padding:1rem;background:linear-gradient(0deg,rgba(0,0,0,.85),transparent);display:flex;justify-content:space-between;align-items:end}
+  .flip__f .cap h3{font-size:1.1rem;font-weight:700}
+  .flip__f .hint{position:absolute;top:.7rem;right:.7rem;background:rgba(0,0,0,.5);border:1px solid var(--line);border-radius:999px;padding:.3rem .6rem;font-size:.7rem}
+  .flip__b{transform:rotateY(180deg);background:var(--card);padding:1.2rem;display:flex;flex-direction:column;gap:.6rem}
+  .flip__b h3{font-size:1.15rem;font-weight:700}
+  .flip__b p{color:#a89f93;font-size:.88rem;flex:1}
+  .flip__b .row{display:flex;justify-content:space-between;align-items:center}
+
+  /* ===== OPT 8: EXPAND DETAIL ===== */
+  .xgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,220px),1fr));gap:1rem}
+  .xc{border-radius:18px;overflow:hidden;border:1px solid var(--line);background:var(--card);cursor:pointer;transition:transform .3s,box-shadow .3s}
+  .xc:hover{transform:translateY(-4px);box-shadow:0 16px 36px rgba(0,0,0,.4)}
+  .xc .im{aspect-ratio:1/1;overflow:hidden}.xc .im img{width:100%;height:100%;object-fit:cover;transition:transform .5s}.xc:hover .im img{transform:scale(1.08)}
+  .xc .bd{padding:.8rem;display:flex;justify-content:space-between;align-items:center}.xc h3{font-size:.95rem;font-weight:700}
+  .overlay{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:1.25rem;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .35s}
+  .overlay.open{opacity:1;pointer-events:auto}
+  .detail{width:min(880px,100%);max-height:88vh;overflow:auto;background:#15120e;border:1px solid var(--line);border-radius:24px;display:grid;grid-template-columns:1fr 1fr;transform:scale(.92);opacity:0;transition:transform .4s cubic-bezier(.22,.9,.3,1),opacity .4s}
+  .overlay.open .detail{transform:scale(1);opacity:1}
+  .detail .im{position:relative}.detail .im img{width:100%;height:100%;object-fit:cover;min-height:280px}
+  .detail .bd{padding:1.6rem;display:flex;flex-direction:column;gap:.8rem}
+  .detail h3{font-family:'Anton';font-weight:400;text-transform:uppercase;font-size:2rem}
+  .detail p{color:#bdb6ad}
+  .detail .close{position:absolute;top:.7rem;right:.7rem;background:rgba(0,0,0,.5);border:1px solid var(--line);width:38px;height:38px;border-radius:50%;font-size:1.1rem}
+  @media(max-width:680px){.detail{grid-template-columns:1fr}}
+
+  /* ===== OPT 9: SCROLL-PINNED HORIZONTAL ===== */
+  #m9{padding:0;border-bottom:1px solid rgba(255,255,255,.06)}
+  .pinwrap{height:340vh;position:relative}
+  .pin{position:sticky;top:0;height:100svh;overflow:hidden;display:flex;flex-direction:column;justify-content:center}
+  .pin__head{padding:1.5rem clamp(1rem,4vw,3rem) .5rem}
+  .pin__head h2{font-family:'Anton';font-weight:400;text-transform:uppercase;font-size:clamp(1.8rem,1rem+4vw,3.2rem)}
+  .pin__head h2 em{color:var(--tomato)}
+  .ptrack{display:flex;gap:1.5rem;padding:1.5rem clamp(1rem,4vw,3rem);will-change:transform}
+  .pcard{flex:0 0 min(78vw,520px);height:62vh;border-radius:24px;overflow:hidden;position:relative;border:1px solid var(--line)}
+  .pcard .pim{position:absolute;inset:0;background-size:cover;background-position:center;transform:scale(1.15);transition:transform .2s linear}
+  .pcard .pov{position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.85),transparent 55%)}
+  .pcard .pb{position:absolute;left:0;right:0;bottom:0;padding:1.5rem;display:flex;justify-content:space-between;align-items:end;z-index:2}
+  .pcard h3{font-family:'Anton';font-weight:400;text-transform:uppercase;font-size:1.8rem}
+  .pcard p{color:#cfc8bd;font-size:.9rem;max-width:30ch}
+  .pprice{font-family:'Anton';font-size:2rem;color:var(--mustard)}
+  .pin__hint{position:absolute;bottom:1rem;left:0;right:0;text-align:center;color:#7d776e;font-size:.78rem}
+
+  /* ===== OPT 10: BENTO FEATURED + SPOTLIGHT + COUNTER ===== */
+  #m10{position:relative}
+  #m10 .spot{position:absolute;inset:0;pointer-events:none;background:radial-gradient(400px 400px at var(--mx,50%) var(--my,30%),rgba(244,163,0,.08),transparent 60%);z-index:0}
+  .bento{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;position:relative;z-index:1}
+  .b-feat{grid-column:span 2;grid-row:span 2;min-height:380px;border-radius:24px;overflow:hidden;position:relative;border:1px solid rgba(244,163,0,.3);display:flex;flex-direction:column;justify-content:flex-end;padding:1.6rem}
+  .b-feat .fim{position:absolute;inset:0;background-size:cover;background-position:center;transform:scale(1.06);transition:transform .8s}
+  .b-feat:hover .fim{transform:scale(1.12)}
+  .b-feat .fov{position:absolute;inset:0;background:linear-gradient(0deg,rgba(8,7,6,.92),rgba(8,7,6,.1) 60%)}
+  .b-feat>*{position:relative;z-index:1}
+  .b-feat .lbl{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--mustard);font-weight:700}
+  .b-feat h3{font-family:'Anton';font-weight:400;text-transform:uppercase;font-size:clamp(1.8rem,1rem+3vw,2.8rem);margin:.3rem 0}
+  .b-feat p{color:#e4ded3;max-width:36ch;margin-bottom:.8rem}
+  .b-cell{border-radius:20px;overflow:hidden;border:1px solid var(--line);background:var(--card);position:relative;min-height:180px;display:flex;flex-direction:column;justify-content:end;padding:1rem;transition:transform .35s,box-shadow .35s}
+  .b-cell:hover{transform:translateY(-4px);box-shadow:0 16px 36px rgba(0,0,0,.4)}
+  .b-cell .cim{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .5s}.b-cell:hover .cim{transform:scale(1.08)}
+  .b-cell .cov{position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.8),transparent 60%)}
+  .b-cell>*{position:relative;z-index:1}
+  .b-cell h4{font-weight:700}
+  .magnetic{transition:transform .2s cubic-bezier(.22,.61,.36,1)}
+  @media(max-width:880px){.bento{grid-template-columns:repeat(2,1fr)}.b-feat{grid-column:span 2}}
+  @media(max-width:520px){.bento{grid-template-columns:1fr}.b-feat{grid-column:span 1}}
+
+  .allergen-note{max-width:1200px;margin:1.2rem auto 0;font-size:.76rem;color:#8a847b;line-height:1.6}.allergen-note b{color:#cfc8bd}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.tilt,.flip__in{transform:none!important}}
+  .foot{padding:2.5rem 1.25rem 3.5rem;text-align:center;color:#8a847b;font-size:.85rem;background:#0d0c0b}.foot b{color:#cfc8bd}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <g id="i-plus"><path d="M12 5v14M5 12h14"/></g>
+</defs></svg>
+
+<header class="page-head">
+  <div class="kicker">DON VITO · Sektion 3 · Advanced FX</div>
+  <h1>Speisekarte – 5 weitere Optionen</h1>
+  <p>Stärkere Effekte: 3D-Tilt mit Cursor-Spotlight, Flip-Cards, Expand-Detail, scroll-gepinnte Horizontal-Galerie, Bento mit Spotlight & Preis-Counter. Maus bewegen, Karten klicken, in #9 scrollen.</p>
+  <nav class="legend">
+    <a href="#m6">6 · 3D-Tilt + Spotlight</a>
+    <a href="#m7">7 · Flip-Cards</a>
+    <a href="#m8">8 · Expand-Detail</a>
+    <a href="#m9">9 · Pinned Horizontal</a>
+    <a href="#m10">10 · Bento + Counter</a>
+  </nav>
+</header>
+
+<section class="sec" id="m6">
+  <div class="optbadge"><span class="opt-no">06</span> 3D-Tilt + Cursor-Spotlight</div>
+  <div class="wrap"><div class="sec__head"><h2>Tilt-<em>Karten</em></h2><div class="tax">Karten neigen sich zur Maus (3D-Parallax), Lichtschein folgt dem Cursor, Bild parallaxt in der Tiefe.</div></div>
+  <div class="tgrid" id="tgrid"></div><div class="allergen-note"></div></div>
+</section>
+
+<section class="sec" id="m7">
+  <div class="optbadge"><span class="opt-no">07</span> Flip-Cards</div>
+  <div class="wrap"><div class="sec__head"><h2>Flip-<em>Karten</em></h2><div class="tax">Vorderseite Foto + Preis, Rückseite Beschreibung, Allergene & Hinzufügen. Hover (Desktop) bzw. Tap (Mobil) dreht die Karte.</div></div>
+  <div class="fgrid" id="fgrid"></div><div class="allergen-note"></div></div>
+</section>
+
+<section class="sec" id="m8">
+  <div class="optbadge"><span class="opt-no">08</span> Expand-Detail</div>
+  <div class="wrap"><div class="sec__head"><h2>Tap to <em>Detail</em></h2><div class="tax">Klick auf ein Gericht öffnet eine große Detailansicht mit Skalierungs-Transition – wie eine Produktseite in einer App.</div></div>
+  <div class="xgrid" id="xgrid"></div><div class="allergen-note"></div></div>
+</section>
+
+<section id="m9">
+  <div class="optbadge"><span class="opt-no">09</span> Scroll-Pinned Horizontal</div>
+  <div class="pinwrap">
+    <div class="pin">
+      <div class="pin__head"><h2>Durchscrollen: <em>Highlights</em></h2></div>
+      <div class="ptrack" id="ptrack"></div>
+      <div class="pin__hint">↓ vertikal scrollen = horizontal durch die Gerichte</div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="m10">
+  <div class="spot" id="spot10"></div>
+  <div class="optbadge"><span class="opt-no">10</span> Bento + Spotlight + Counter</div>
+  <div class="wrap"><div class="sec__head"><h2>Bento-<em>Board</em></h2><div class="tax">Großes Featured-Gericht + modulare Kacheln, Hintergrund-Spotlight folgt der Maus, Preise zählen beim Reinscrollen hoch.</div></div>
+  <div class="bento" id="bento"></div><div class="allergen-note"></div></div>
+</section>
+
+<footer class="foot">
+  <p><b>DON VITO</b> — fiktives Demo · Preise/Daten Platzhalter · Bilder: Unsplash (Preview)</p>
+  <p style="margin-top:.4rem">Welche dieser Effekt-Varianten (6–10)? Gern auch Mix mit 1–5. Dann finalisiere ich (Next.js + Framer Motion).</p>
+</footer>
+
+<!-- detail overlay -->
+<div class="overlay" id="overlay"><div class="detail" id="detail"></div></div>
+
+<script>
+  const IMG=(id,w=700)=>`https://images.unsplash.com/${id}?auto=format&fit=crop&w=${w}&q=80`;
+  const data=[
+    {n:'Döner Teller',d:'Saftiges Kalbfleisch vom Drehspieß mit Pommes oder Reis, frischem Salat und hausgemachter Soße.',p:'9,90',img:'photo-1599487488170-d11ec9c172f0',al:['a','g'],t:['halal']},
+    {n:'Smash Burger',d:'Doppelt gegrilltes Beef, geschmolzener Cheddar, knusprige Pommes – frisch gemacht.',p:'8,90',img:'photo-1568901346375-23c9450c58cd',al:['a','c','g'],t:['halal']},
+    {n:'Pizza Margherita',d:'San-Marzano-Tomaten, Mozzarella, frisches Basilikum – aus dem Steinofen.',p:'7,50',img:'photo-1574071318508-1cdbab80d002',al:['a','g'],t:['veg']},
+    {n:'Pizza Diavola',d:'Scharfe Salami, Peperoni und Chili für alle, die es feurig mögen.',p:'9,50',img:'photo-1628840042765-356cda07504e',al:['a','g'],t:['hot','halal']},
+    {n:'Dürüm Döner',d:'Im dünnen Yufka gerollt, mit Salat, Soße und reichlich Fleisch.',p:'7,50',img:'photo-1561758033-d89a9ad46330',al:['a','g'],t:['halal']},
+    {n:'Familienpizza XXL',d:'40 cm Genuss zum Teilen – zwei Beläge frei wählbar.',p:'14,50',img:'photo-1565299624946-b28f40a0ae38',al:['a','g'],t:['veg']},
+    {n:'Falafel Dürüm',d:'Hausgemachte Falafel mit Hummus, Salat und Tahini.',p:'6,90',img:'photo-1593001872095-7d5b3868dd20',al:['a'],t:['vegan','halal']},
+    {n:'Gemischter Salat',d:'Frisches Gemüse der Saison mit Dressing nach Wahl.',p:'6,90',img:'photo-1512621776951-a57141f2eefd',al:[],t:['veg','vegan']},
+  ];
+  const tagLabel={veg:'vegetarisch',vegan:'vegan',halal:'halal',hot:'scharf'};
+  const tags=a=>a.map(t=>`<span class="tag ${t}">${tagLabel[t]}</span>`).join('');
+  const allerg=a=>a.length?a.map(x=>`<span class="badge" title="Allergen ${x}">${x}</span>`).join(''):'';
+  document.querySelectorAll('.allergen-note').forEach(n=>n.innerHTML='<b>Allergene:</b> a = Gluten · c = Eier · g = Milch. Vollständige Kennzeichnung gem. LMIV im Bestellsystem. Preise inkl. USt (Speisen 7 %, Getränke 19 %).');
+
+  // OPT6 tilt + spotlight
+  const tgrid=document.getElementById('tgrid');
+  tgrid.innerHTML=data.slice(0,6).map(it=>`<article class="tilt rv"><div class="im"><img src="${IMG(it.img)}" alt="${it.n}"></div><div class="bd"><div class="top"><h3>${it.n}</h3><span class="price">${it.p} €</span></div><p>${it.d}</p><div class="f"><span class="tags">${tags(it.t)} ${allerg(it.al)}</span><button class="add touch"><svg class="ic" viewBox="0 0 24 24"><use href="#i-plus"/></svg></button></div></div></article>`).join('');
+  tgrid.querySelectorAll('.tilt').forEach(c=>{
+    c.addEventListener('mousemove',e=>{const r=c.getBoundingClientRect();const x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;
+      c.style.transform=`perspective(900px) rotateY(${(x-.5)*10}deg) rotateX(${(.5-y)*10}deg) translateY(-4px)`;
+      c.style.setProperty('--mx',x*100+'%');c.style.setProperty('--my',y*100+'%');});
+    c.addEventListener('mouseleave',()=>c.style.transform='');
+  });
+
+  // OPT7 flip
+  const fgrid=document.getElementById('fgrid');
+  fgrid.innerHTML=data.slice(0,6).map(it=>`<div class="flip rv"><div class="flip__in"><div class="flip__f"><img src="${IMG(it.img)}" alt="${it.n}"><span class="hint">↻ Details</span><div class="cap"><h3>${it.n}</h3><span class="price">${it.p} €</span></div></div><div class="flip__b"><h3>${it.n}</h3><p>${it.d}</p><div style="display:flex;gap:.3rem;flex-wrap:wrap">${tags(it.t)} ${allerg(it.al)}</div><div class="row"><span class="price">${it.p} €</span><button class="add touch"><svg class="ic" viewBox="0 0 24 24"><use href="#i-plus"/></svg>Hinzufügen</button></div></div></div></div>`).join('');
+  fgrid.querySelectorAll('.flip').forEach(f=>f.addEventListener('click',()=>f.classList.toggle('on')));
+
+  // OPT8 expand detail
+  const xgrid=document.getElementById('xgrid'),overlay=document.getElementById('overlay'),detail=document.getElementById('detail');
+  xgrid.innerHTML=data.map((it,i)=>`<article class="xc rv" data-i="${i}"><div class="im"><img src="${IMG(it.img,500)}" alt="${it.n}"></div><div class="bd"><h3>${it.n}</h3><span class="price">${it.p} €</span></div></article>`).join('');
+  function openDetail(i){const it=data[i];detail.innerHTML=`<div class="im"><img src="${IMG(it.img,900)}" alt="${it.n}"><button class="close" id="cl">×</button></div><div class="bd"><div style="display:flex;gap:.4rem;flex-wrap:wrap">${tags(it.t)} ${allerg(it.al)}</div><h3>${it.n}</h3><p>${it.d}</p><div style="display:flex;justify-content:space-between;align-items:center;margin-top:auto"><span class="price" style="font-size:1.8rem">${it.p} €</span><button class="add touch" style="padding:.7rem 1.2rem"><svg class="ic" viewBox="0 0 24 24"><use href="#i-plus"/></svg>In den Warenkorb</button></div></div>`;
+    overlay.classList.add('open');document.body.style.overflow='hidden';detail.querySelector('#cl').onclick=close;}
+  function close(){overlay.classList.remove('open');document.body.style.overflow='';}
+  xgrid.querySelectorAll('.xc').forEach(c=>c.addEventListener('click',()=>openDetail(+c.dataset.i)));
+  overlay.addEventListener('click',e=>{if(e.target===overlay)close();});
+
+  // OPT9 pinned horizontal
+  const ptrack=document.getElementById('ptrack');
+  ptrack.innerHTML=data.slice(0,6).map(it=>`<div class="pcard"><div class="pim" style="background-image:url('${IMG(it.img,1000)}')"></div><div class="pov"></div><div class="pb"><div><h3>${it.n}</h3><p>${it.d}</p></div><span class="pprice">${it.p} €</span></div></div>`).join('');
+  const pinwrap=document.getElementById('m9').querySelector('.pinwrap');
+  function pinScroll(){const r=pinwrap.getBoundingClientRect();const total=pinwrap.offsetHeight-window.innerHeight;
+    const prog=Math.min(1,Math.max(0,-r.top/total));const max=ptrack.scrollWidth-window.innerWidth+40;
+    ptrack.style.transform=`translateX(${-prog*max}px)`;
+    ptrack.querySelectorAll('.pim').forEach(im=>{im.style.transform=`scale(1.15) translateX(${prog*20-10}px)`;});}
+  window.addEventListener('scroll',pinScroll,{passive:true});pinScroll();
+
+  // OPT10 bento + spotlight + counter
+  const bento=document.getElementById('bento');
+  const feat=data[1];
+  bento.innerHTML=`<div class="b-feat rv"><div class="fim" style="background-image:url('${IMG(feat.img,1100)}')"></div><div class="fov"></div><span class="lbl">★ Bestseller der Woche</span><h3>${feat.n}</h3><p>${feat.d}</p><div style="display:flex;align-items:center;gap:1rem"><span class="price counter" data-v="${feat.p}" style="font-size:2rem">0 €</span><button class="add magnetic touch" style="padding:.7rem 1.2rem"><svg class="ic" viewBox="0 0 24 24"><use href="#i-plus"/></svg>Hinzufügen</button></div></div>`+
+    data.slice(2,8).map(it=>`<div class="b-cell rv"><div class="cim" style="background-image:url('${IMG(it.img,600)}')"></div><div class="cov"></div><div style="display:flex;justify-content:space-between;align-items:end"><div><h4>${it.n}</h4><span style="display:flex;gap:.3rem;margin-top:.2rem">${tags(it.t)}</span></div><span class="price counter" data-v="${it.p}">0 €</span></div></div>`).join('');
+  const spot=document.getElementById('spot10');
+  document.getElementById('m10').addEventListener('mousemove',e=>{const r=document.getElementById('m10').getBoundingClientRect();spot.style.setProperty('--mx',(e.clientX-r.left)+'px');spot.style.setProperty('--my',(e.clientY-r.top)+'px');});
+  // magnetic button
+  bento.querySelectorAll('.magnetic').forEach(b=>{b.addEventListener('mousemove',e=>{const r=b.getBoundingClientRect();b.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.3}px,${(e.clientY-r.top-r.height/2)*.3}px)`;});b.addEventListener('mouseleave',()=>b.style.transform='');});
+  // counters
+  function runCounter(el){const target=parseFloat(el.dataset.v.replace(',','.'));const t0=performance.now();
+    (function tick(t){const k=Math.min(1,(t-t0)/900);const v=(target*(1-Math.pow(1-k,3)));el.textContent=v.toFixed(2).replace('.',',')+' €';if(k<1)requestAnimationFrame(tick);})(t0);}
+
+  // generic reveal + counter trigger + add buttons
+  const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');e.target.querySelectorAll?.('.counter:not(.done)').forEach(c=>{c.classList.add('done');runCounter(c);});io.unobserve(e.target);}})},{threshold:.15});
+  document.querySelectorAll('.rv').forEach(n=>io.observe(n));
+  document.addEventListener('click',e=>{const b=e.target.closest('.add');if(!b)return;e.preventDefault();const o=b.innerHTML;b.innerHTML='✓';b.style.background='#1f7a3d';setTimeout(()=>{b.innerHTML=o;b.style.background='';},1100);});
+</script>
+</body>
+</html>
