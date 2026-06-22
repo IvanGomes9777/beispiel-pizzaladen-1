@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DON VITO – Speisekarte: 5 Optionen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{--tomato:#E2331E;--tomato-2:#ff5a3c;--mustard:#F4A300;--ink:#0f0e0c;--card:#16130f;--line:rgba(255,255,255,.1);--ok:#39d353}
+  html{scroll-behavior:smooth}
+  body{font-family:'Inter',system-ui,sans-serif;background:#0d0c0b;color:#fff;-webkit-font-smoothing:antialiased}
+  img{max-width:100%;height:auto;display:block}
+  a{text-decoration:none;color:inherit}
+  button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
+  ul{list-style:none}
+  .touch{min-height:44px;min-width:44px}
+  .ic{width:1.05em;height:1.05em;flex:0 0 auto;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;fill:none}
+
+  .page-head{padding:clamp(1.75rem,4vw,3rem) 1.25rem 1.25rem;text-align:center;background:radial-gradient(120% 100% at 50% 0%,#241f1a,#0d0c0b 70%);border-bottom:1px solid var(--line)}
+  .page-head .kicker{letter-spacing:.3em;text-transform:uppercase;font-size:.7rem;color:var(--mustard);font-weight:700}
+  .page-head h1{font-family:'Anton';font-weight:400;font-size:clamp(1.5rem,1rem+3vw,2.4rem);margin:.45rem 0 .3rem;text-transform:uppercase}
+  .page-head p{max-width:64ch;margin:0 auto;color:#bdb6ad;font-size:clamp(.92rem,.9rem+.3vw,1.02rem)}
+  .legend{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;margin-top:1rem}
+  .legend a{font-size:.78rem;padding:.45rem .8rem;border:1px solid var(--line);border-radius:999px;color:#e7e1d8;transition:.25s}
+  .legend a:hover{border-color:var(--mustard);color:#fff;transform:translateY(-2px)}
+
+  .sec{padding:clamp(2.5rem,5vw,4.5rem) clamp(1rem,4vw,3rem);border-bottom:1px solid rgba(255,255,255,.06);position:relative}
+  .sec__head{max-width:1200px;margin:0 auto 1.6rem;display:flex;align-items:flex-end;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+  .sec__head h2{font-family:'Anton';font-weight:400;text-transform:uppercase;font-size:clamp(1.8rem,1rem+4vw,3.2rem);line-height:.95}
+  .sec__head h2 em{color:var(--tomato);font-style:normal}
+  .sec__head .tax{font-size:.78rem;color:#9a948a;max-width:42ch}
+  .optbadge{position:absolute;left:1rem;top:1rem;z-index:5;display:flex;gap:.5rem;align-items:center;background:rgba(0,0,0,.5);border:1px solid var(--line);padding:.4rem .7rem;border-radius:10px;font-size:.78rem}
+  .opt-no{background:var(--mustard);color:#1a1304;font-weight:800;border-radius:7px;padding:.1rem .45rem}
+  .wrap{max-width:1200px;margin:0 auto}
+
+  .badge{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:6px;font-size:.66rem;font-weight:700;background:rgba(255,255,255,.1);color:#cfc8bd}
+  .tag{font-size:.66rem;font-weight:700;padding:.16rem .45rem;border-radius:6px;letter-spacing:.02em}
+  .tag.veg{background:rgba(57,211,83,.16);color:#8ef0a4}
+  .tag.vegan{background:rgba(57,211,83,.22);color:#aef7be}
+  .tag.halal{background:rgba(244,163,0,.16);color:#ffd98a}
+  .tag.hot{background:rgba(226,51,30,.18);color:#ff9b8a}
+  .price{font-family:'Anton';font-weight:400;color:#fff;font-size:1.25rem;white-space:nowrap}
+  .add{display:inline-flex;align-items:center;justify-content:center;gap:.35rem;padding:.5rem .8rem;border-radius:999px;font-weight:700;font-size:.85rem;color:#fff;background:linear-gradient(135deg,var(--tomato),var(--tomato-2));box-shadow:0 6px 16px rgba(226,51,30,.35);transition:transform .25s cubic-bezier(.22,.61,.36,1),box-shadow .25s}
+  .add:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(226,51,30,.5)}
+  .add:active{transform:scale(.95)}
+  .add.added{background:#1f7a3d;box-shadow:none}
+
+  .rv{opacity:0;transform:translateY(20px);transition:opacity .6s cubic-bezier(.22,.61,.36,1),transform .6s cubic-bezier(.22,.61,.36,1)}
+  .rv.in{opacity:1;transform:none}
+
+  /* ---------- OPT 1: IMAGE-KACHEL-GRID + TABS ---------- */
+  .tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.4rem}
+  .tabs button{display:inline-flex;align-items:center;gap:.5rem;padding:.55rem 1rem;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:#d8d2c8;font-weight:600;font-size:.9rem;transition:.25s}
+  .tabs button.on{background:#fff;color:#16130f;border-color:#fff}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:1rem}
+  .dish{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;transition:transform .35s cubic-bezier(.22,.61,.36,1),box-shadow .35s,border-color .35s}
+  .dish:hover{transform:translateY(-5px);box-shadow:0 18px 40px rgba(0,0,0,.4);border-color:rgba(255,255,255,.2)}
+  .dish__img{aspect-ratio:16/11;overflow:hidden;position:relative}
+  .dish__img img{width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.22,.61,.36,1)}
+  .dish:hover .dish__img img{transform:scale(1.08)}
+  .dish__tags{position:absolute;top:.6rem;left:.6rem;display:flex;gap:.3rem;flex-wrap:wrap}
+  .dish__b{padding:1rem;display:flex;flex-direction:column;gap:.5rem;flex:1}
+  .dish__t{display:flex;justify-content:space-between;gap:.6rem;align-items:flex-start}
+  .dish__t h3{font-size:1.05rem;font-weight:700}
+  .dish__d{color:#a89f93;font-size:.85rem;flex:1}
+  .dish__f{display:flex;justify-content:space-between;align-items:center;gap:.5rem;margin-top:.3rem}
+  .allerg{display:flex;gap:.25rem}
+
+  /* ---------- OPT 2: EDITORIAL / MAGAZINE LISTE ---------- */
+  .ed{display:grid;grid-template-columns:1fr 1fr;gap:2rem 3rem}
+  .ed__cat h3{font-family:'Anton';font-weight:400;text-transform:uppercase;font-size:1.5rem;color:var(--mustard);margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:1px solid var(--line)}
+  .ed__row{display:flex;align-items:baseline;gap:.6rem;padding:.7rem 0;border-bottom:1px dashed rgba(255,255,255,.08)}
+  .ed__row .th{width:46px;height:46px;border-radius:10px;overflow:hidden;flex:0 0 auto;align-self:center}
+  .ed__row .th img{width:100%;height:100%;object-fit:cover}
+  .ed__row .nm{font-weight:700}
+  .ed__row .nm small{display:block;color:#9a948a;font-weight:400;font-size:.78rem}
+  .ed__row .leader{flex:1;border-bottom:1px dotted rgba(255,255,255,.22);transform:translateY(-4px)}
+  @media(max-width:760px){.ed{grid-template-columns:1fr}}
+
+  /* ---------- OPT 3: STICKY SIDEBAR + SCROLL ---------- */
+  .app{display:grid;grid-template-columns:220px 1fr;gap:1.5rem;align-items:start}
+  .app__nav{position:sticky;top:1rem;display:flex;flex-direction:column;gap:.25rem}
+  .app__nav a{padding:.7rem .9rem;border-radius:12px;color:#cfc8bd;font-weight:600;font-size:.92rem;display:flex;justify-content:space-between;transition:.2s}
+  .app__nav a.on,.app__nav a:hover{background:rgba(255,255,255,.08);color:#fff}
+  .app__nav a span{color:#7d776e;font-size:.8rem}
+  .app__cat{margin-bottom:2rem}
+  .app__cat h3{font-family:'Anton';font-weight:400;text-transform:uppercase;font-size:1.4rem;margin-bottom:.8rem;position:sticky;top:0;background:#0d0c0b;padding:.4rem 0;z-index:1}
+  .app__row{display:flex;gap:1rem;padding:.9rem;border:1px solid var(--line);border-radius:14px;background:var(--card);margin-bottom:.6rem;transition:border-color .25s,transform .25s}
+  .app__row:hover{border-color:rgba(255,255,255,.22);transform:translateX(3px)}
+  .app__row .th{width:74px;height:74px;border-radius:10px;overflow:hidden;flex:0 0 auto}
+  .app__row .th img{width:100%;height:100%;object-fit:cover}
+  .app__row .b{flex:1;display:flex;flex-direction:column;gap:.25rem}
+  .app__row .b .top{display:flex;justify-content:space-between;gap:.5rem}
+  .app__row h4{font-size:1rem;font-weight:700}
+  .app__row p{color:#a89f93;font-size:.83rem}
+  @media(max-width:760px){.app{grid-template-columns:1fr}.app__nav{position:static;flex-direction:row;overflow-x:auto;padding-bottom:.3rem}.app__nav a{white-space:nowrap}}
+
+  /* ---------- OPT 4: CAROUSELS ---------- */
+  .car{margin-bottom:2rem}
+  .car__h{display:flex;justify-content:space-between;align-items:center;margin-bottom:.8rem}
+  .car__h h3{font-family:'Anton';font-weight:400;text-transform:uppercase;font-size:1.4rem}
+  .car__track{display:flex;gap:1rem;overflow-x:auto;padding:.3rem .3rem 1rem;scroll-snap-type:x mandatory;scrollbar-width:thin}
+  .car__track::-webkit-scrollbar{height:8px}.car__track::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:99px}
+  .car__card{flex:0 0 260px;scroll-snap-align:start;background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;transition:transform .35s,box-shadow .35s}
+  .car__card:hover{transform:translateY(-5px);box-shadow:0 18px 40px rgba(0,0,0,.4)}
+  .car__card .im{aspect-ratio:16/11;overflow:hidden}
+  .car__card .im img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+  .car__card:hover .im img{transform:scale(1.08)}
+  .car__card .bd{padding:.9rem;display:flex;flex-direction:column;gap:.5rem}
+  .feat-card{background:linear-gradient(135deg,rgba(226,51,30,.16),rgba(244,163,0,.1));border:1px solid rgba(244,163,0,.3)}
+
+  /* ---------- OPT 5: FILTER BOARD ---------- */
+  .filters{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.4rem;align-items:center}
+  .filters .fl{padding:.5rem .9rem;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:#d8d2c8;font-weight:600;font-size:.85rem;transition:.2s}
+  .filters .fl.on{background:var(--tomato);border-color:var(--tomato);color:#fff}
+  .board{columns:280px;column-gap:1rem}
+  .board .dish{display:inline-flex;width:100%;margin-bottom:1rem;break-inside:avoid}
+  .empty{color:#9a948a;padding:2rem 0;text-align:center;display:none}
+
+  .allergen-note{max-width:1200px;margin:1.2rem auto 0;font-size:.76rem;color:#8a847b;line-height:1.6}
+  .allergen-note b{color:#cfc8bd}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+  .foot{padding:2.5rem 1.25rem 3.5rem;text-align:center;color:#8a847b;font-size:.85rem;background:#0d0c0b}
+  .foot b{color:#cfc8bd}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <g id="i-plus"><path d="M12 5v14M5 12h14"/></g>
+  <g id="i-arrow"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></g>
+</defs></svg>
+
+<header class="page-head">
+  <div class="kicker">DON VITO · Sektion 3</div>
+  <h1>Speisekarte – 5 Optionen</h1>
+  <p>Digitale Speisekarte mit Preisen, echten Fotos und <b>Allergen-Kennzeichnung</b> (LMIV-Pflicht). Jede Variante hat eigene Interaktion/Animation. Tabs, Filter & „+"-Buttons sind live.</p>
+  <nav class="legend">
+    <a href="#m1">1 · Bild-Kachel-Grid</a>
+    <a href="#m2">2 · Editorial-Liste</a>
+    <a href="#m3">3 · App-Sidebar</a>
+    <a href="#m4">4 · Karussells</a>
+    <a href="#m5">5 · Filter-Board</a>
+  </nav>
+</header>
+
+<!-- OPT 1 -->
+<section class="sec" id="m1">
+  <div class="optbadge"><span class="opt-no">01</span> Bild-Kachel-Grid + Tabs</div>
+  <div class="wrap">
+    <div class="sec__head"><h2>Unsere <em>Speisekarte</em></h2><div class="tax">Alle Preise inkl. 7 % USt (Speisen). Kategorie wählen – Karten erscheinen gestaffelt.</div></div>
+    <div class="tabs" id="tabs1"></div>
+    <div class="grid" id="grid1"></div>
+    <div class="allergen-note" id="an1"></div>
+  </div>
+</section>
+
+<!-- OPT 2 -->
+<section class="sec" id="m2">
+  <div class="optbadge"><span class="opt-no">02</span> Editorial / Magazine-Liste</div>
+  <div class="wrap">
+    <div class="sec__head"><h2>La <em>Carta</em></h2><div class="tax">Wie eine gedruckte Karte – elegant, mit Punktlinien & kleinen Thumbnails.</div></div>
+    <div class="ed" id="ed2"></div>
+    <div class="allergen-note" id="an2"></div>
+  </div>
+</section>
+
+<!-- OPT 3 -->
+<section class="sec" id="m3">
+  <div class="optbadge"><span class="opt-no">03</span> App-Sidebar + Scroll</div>
+  <div class="wrap">
+    <div class="sec__head"><h2>Bestell-<em>Menü</em></h2><div class="tax">Sticky Kategorie-Navigation links, scrollbare Listen rechts – wie eine Bestell-App, nur schöner.</div></div>
+    <div class="app">
+      <nav class="app__nav" id="nav3"></nav>
+      <div id="list3"></div>
+    </div>
+    <div class="allergen-note" id="an3"></div>
+  </div>
+</section>
+
+<!-- OPT 4 -->
+<section class="sec" id="m4">
+  <div class="optbadge"><span class="opt-no">04</span> Karussells + Featured</div>
+  <div class="wrap">
+    <div class="sec__head"><h2>Bestseller &amp; <em>mehr</em></h2><div class="tax">Horizontale Swipe-Karussells je Kategorie – mobil-stark, mit Featured-Gericht.</div></div>
+    <div id="car4"></div>
+    <div class="allergen-note" id="an4"></div>
+  </div>
+</section>
+
+<!-- OPT 5 -->
+<section class="sec" id="m5">
+  <div class="optbadge"><span class="opt-no">05</span> Filter-Board</div>
+  <div class="wrap">
+    <div class="sec__head"><h2>Finde dein <em>Gericht</em></h2><div class="tax">Live-Filter nach vegetarisch / vegan / halal / scharf – Masonry-Board ordnet sich animiert neu.</div></div>
+    <div class="filters" id="filters5"></div>
+    <div class="board" id="board5"></div>
+    <div class="empty" id="empty5">Keine Gerichte für diese Filter.</div>
+    <div class="allergen-note" id="an5"></div>
+  </div>
+</section>
+
+<footer class="foot">
+  <p><b>DON VITO</b> — fiktives Demo · Preise/Daten Platzhalter · Bilder: Unsplash (Preview)</p>
+  <p style="margin-top:.4rem">Welche Speisekarten-Variante (1–5) oder Mix? Dann finalisiere ich sie (Next.js + Framer Motion).</p>
+</footer>
+
+<script>
+  const IMG=id=>`https://images.unsplash.com/${id}?auto=format&fit=crop&w=600&q=80`;
+  // menu data (placeholder prices, food at 7% USt; allergens as letter codes)
+  const menu=[
+    {cat:'Döner & Kebab',items:[
+      {n:'Döner Tasche',d:'Kalbfleisch, Salat, Soße im Fladenbrot',p:'6,50',img:'photo-1561758033-d89a9ad46330',al:['a','g'],t:['halal']},
+      {n:'Dürüm Döner',d:'gerollt im Yufka, frisch belegt',p:'7,50',img:'photo-1561758033-d89a9ad46330',al:['a','g'],t:['halal']},
+      {n:'Döner Teller',d:'mit Pommes oder Reis & Salat',p:'9,90',img:'photo-1599487488170-d11ec9c172f0',al:['a','g'],t:['halal']},
+      {n:'Falafel Dürüm',d:'hausgemachte Falafel, Hummus',p:'6,90',img:'photo-1593001872095-7d5b3868dd20',al:['a'],t:['vegan','halal']},
+    ]},
+    {cat:'Pizza',items:[
+      {n:'Margherita',d:'Tomate, Mozzarella, Basilikum',p:'7,50',img:'photo-1574071318508-1cdbab80d002',al:['a','g'],t:['veg']},
+      {n:'Salami',d:'Tomate, Mozzarella, Salami',p:'8,50',img:'photo-1513104890138-7c749659a591',al:['a','g'],t:['halal']},
+      {n:'Diavola',d:'scharfe Salami, Peperoni, Chili',p:'9,50',img:'photo-1628840042765-356cda07504e',al:['a','g'],t:['hot','halal']},
+      {n:'Familienpizza XXL',d:'40 cm, 2 Beläge frei wählbar',p:'14,50',img:'photo-1565299624946-b28f40a0ae38',al:['a','g'],t:['veg']},
+    ]},
+    {cat:'Burger & Grill',items:[
+      {n:'Smash Burger',d:'doppelt Beef, Cheddar, Pommes',p:'8,90',img:'photo-1568901346375-23c9450c58cd',al:['a','c','g'],t:['halal']},
+      {n:'Cheeseburger',d:'Beef-Patty, Cheddar, Salat',p:'7,90',img:'photo-1550547660-d9450f859349',al:['a','c','g'],t:['halal']},
+      {n:'Veggie Burger',d:'Falafel-Patty, Avocado',p:'8,50',img:'photo-1525059696034-4967a8e1dca2',al:['a'],t:['veg']},
+    ]},
+    {cat:'Imbiss & Salate',items:[
+      {n:'Pommes',d:'knusprig, mit Ketchup & Mayo',p:'3,50',img:'photo-1573080496219-bb080dd4f877',al:[],t:['veg','vegan']},
+      {n:'Currywurst + Pommes',d:'mit hausgemachter Currysoße',p:'5,50',img:'photo-1609183480237-ccbb2d7c5772',al:['a'],t:[]},
+      {n:'Gemischter Salat',d:'frisches Gemüse, Dressing',p:'6,90',img:'photo-1512621776951-a57141f2eefd',al:[],t:['veg','vegan']},
+    ]},
+    {cat:'Getränke',items:[
+      {n:'Ayran 0,25l',d:'türkisches Joghurtgetränk',p:'1,80',img:'photo-1571091718767-18b5b1457add',al:['g'],t:['veg']},
+      {n:'Cola 0,33l',d:'eisgekühlt',p:'2,50',img:'photo-1554866585-cd94860890b7',al:[],t:['vegan']},
+    ]},
+  ];
+  const tagLabel={veg:'vegetarisch',vegan:'vegan',halal:'halal',hot:'scharf'};
+  const tagClass={veg:'veg',vegan:'vegan',halal:'halal',hot:'hot'};
+  const tags=(arr)=>arr.map(t=>`<span class="tag ${tagClass[t]}">${tagLabel[t]}</span>`).join('');
+  const allerg=(arr)=>arr.length?`<span class="allerg">${arr.map(a=>`<span class="badge" title="Allergen ${a}">${a}</span>`).join('')}</span>`:'';
+  const ALLERG_NOTE='<b>Allergene & Zusatzstoffe:</b> a = glutenhaltiges Getreide · c = Eier · g = Milch/Laktose. Vollständige Kennzeichnung gemäß LMIV (EU 1169/2011) auf Anfrage & im Bestellsystem. Alle Preise inkl. gesetzl. USt (Speisen 7 %, Getränke 19 %).';
+  document.querySelectorAll('.allergen-note').forEach(n=>n.innerHTML=ALLERG_NOTE);
+
+  // ---- OPT 1: tabs + grid ----
+  const tabs1=document.getElementById('tabs1'),grid1=document.getElementById('grid1');
+  menu.forEach((c,i)=>{const b=document.createElement('button');b.textContent=c.cat;if(i===0)b.classList.add('on');b.onclick=()=>{tabs1.querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderGrid(i);};tabs1.appendChild(b);});
+  function dishCard(it){return `<article class="dish rv"><div class="dish__img"><img src="${IMG(it.img)}" alt="${it.n}"><div class="dish__tags">${tags(it.t)}</div></div><div class="dish__b"><div class="dish__t"><h3>${it.n}</h3></div><p class="dish__d">${it.d}</p><div class="dish__f"><div style="display:flex;align-items:center;gap:.5rem"><span class="price">${it.p} €</span>${allerg(it.al)}</div><button class="add touch"><svg class="ic" viewBox="0 0 24 24"><use href="#i-plus"/></svg>Hinzufügen</button></div></div></article>`;}
+  function renderGrid(i){grid1.innerHTML=menu[i].items.map(dishCard).join('');obs(grid1);bindAdd(grid1);}
+  renderGrid(0);
+
+  // ---- OPT 2: editorial ----
+  document.getElementById('ed2').innerHTML=menu.map(c=>`<div class="ed__cat"><h3>${c.cat}</h3>${c.items.map(it=>`<div class="ed__row rv"><span class="th"><img src="${IMG(it.img)}" alt=""></span><span class="nm">${it.n} ${allerg(it.al)}<small>${it.d}</small></span><span class="leader"></span><span class="price">${it.p} €</span></div>`).join('')}</div>`).join('');
+  obs(document.getElementById('ed2'));
+
+  // ---- OPT 3: app sidebar ----
+  const nav3=document.getElementById('nav3'),list3=document.getElementById('list3');
+  nav3.innerHTML=menu.map((c,i)=>`<a href="#c3-${i}" class="${i===0?'on':''}">${c.cat}<span>${c.items.length}</span></a>`).join('');
+  list3.innerHTML=menu.map((c,i)=>`<div class="app__cat" id="c3-${i}"><h3>${c.cat}</h3>${c.items.map(it=>`<div class="app__row rv"><span class="th"><img src="${IMG(it.img)}" alt=""></span><div class="b"><div class="top"><h4>${it.n}</h4><span class="price">${it.p} €</span></div><p>${it.d}</p><div style="display:flex;justify-content:space-between;align-items:center"><span style="display:flex;gap:.3rem">${tags(it.t)}${allerg(it.al)}</span><button class="add touch"><svg class="ic" viewBox="0 0 24 24"><use href="#i-plus"/></svg></button></div></div></div>`).join('')}</div>`).join('');
+  obs(list3);bindAdd(list3);
+  const navlinks=[...nav3.querySelectorAll('a')],cats=[...list3.querySelectorAll('.app__cat')];
+  const so=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){const i=cats.indexOf(e.target);navlinks.forEach(l=>l.classList.remove('on'));navlinks[i]?.classList.add('on');}})},{rootMargin:'-30% 0px -60% 0px'});
+  cats.forEach(c=>so.observe(c));
+
+  // ---- OPT 4: carousels ----
+  document.getElementById('car4').innerHTML=menu.slice(0,4).map((c,ci)=>`<div class="car"><div class="car__h"><h3>${c.cat}</h3><a href="#" style="color:#cfc8bd;font-size:.85rem;display:inline-flex;align-items:center;gap:.3rem">Alle ansehen <svg class="ic" viewBox="0 0 24 24"><use href="#i-arrow"/></svg></a></div><div class="car__track">${c.items.map((it,ii)=>`<article class="car__card ${ci===0&&ii===0?'feat-card':''}"><div class="im"><img src="${IMG(it.img)}" alt="${it.n}"></div><div class="bd"><div style="display:flex;justify-content:space-between;align-items:start"><strong>${it.n}</strong><span class="price">${it.p} €</span></div><p style="color:#a89f93;font-size:.83rem">${it.d}</p><div style="display:flex;justify-content:space-between;align-items:center"><span style="display:flex;gap:.3rem">${tags(it.t)}${allerg(it.al)}</span><button class="add touch"><svg class="ic" viewBox="0 0 24 24"><use href="#i-plus"/></svg></button></div></div></article>`).join('')}</div></div>`).join('');
+  bindAdd(document.getElementById('car4'));
+
+  // ---- OPT 5: filter board ----
+  const all=menu.flatMap(c=>c.items.map(it=>({...it,cat:c.cat})));
+  const board5=document.getElementById('board5'),filters5=document.getElementById('filters5'),empty5=document.getElementById('empty5');
+  const FILTERS=[['all','Alle'],['veg','vegetarisch'],['vegan','vegan'],['halal','halal'],['hot','scharf']];
+  filters5.innerHTML=FILTERS.map(([k,l],i)=>`<button class="fl ${i===0?'on':''}" data-f="${k}">${l}</button>`).join('');
+  function renderBoard(f){const list=f==='all'?all:all.filter(it=>it.t.includes(f));board5.innerHTML=list.map(dishCard).join('');empty5.style.display=list.length?'none':'block';obs(board5);bindAdd(board5);}
+  filters5.querySelectorAll('.fl').forEach(b=>b.onclick=()=>{filters5.querySelectorAll('.fl').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderBoard(b.dataset.f);});
+  renderBoard('all');
+
+  // helpers
+  function obs(scope){const io=new IntersectionObserver((es)=>{es.forEach((e,i)=>{if(e.isIntersecting){e.target.style.transitionDelay=(Math.min([...scope.children].indexOf(e.target),8)*0.05)+'s';e.target.classList.add('in');io.unobserve(e.target);}})},{threshold:.12});scope.querySelectorAll('.rv').forEach(n=>io.observe(n));}
+  function bindAdd(scope){scope.querySelectorAll('.add').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();b.classList.add('added');const orig=b.innerHTML;b.innerHTML='✓ Im Warenkorb';setTimeout(()=>{b.classList.remove('added');b.innerHTML=orig;},1400);}));}
+</script>
+</body>
+</html>
