@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DON VITO – Speisekarte: Premium-Animationen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{--tomato:#E2331E;--tomato-2:#ff5a3c;--mustard:#F4A300;--card:#16130f;--line:rgba(255,255,255,.1);--ok:#39d353}
+  html{scroll-behavior:smooth}
+  body{font-family:'Inter',system-ui,sans-serif;background:#0a0908;color:#fff;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  img{max-width:100%;height:auto;display:block}
+  button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}ul{list-style:none}
+  .price{font-family:'Anton';white-space:nowrap}
+  .head{padding:clamp(1.75rem,4vw,3rem) 1.25rem 1.25rem;text-align:center;background:radial-gradient(120% 100% at 50% 0%,#241f1a,#0a0908 70%);border-bottom:1px solid var(--line)}
+  .head .k{letter-spacing:.3em;text-transform:uppercase;font-size:.7rem;color:var(--mustard);font-weight:700}
+  .head h1{font-family:'Anton';font-weight:400;font-size:clamp(1.5rem,1rem+3vw,2.4rem);margin:.45rem 0 .3rem;text-transform:uppercase}
+  .head p{max-width:60ch;margin:0 auto;color:#bdb6ad;font-size:.98rem}
+  .nav{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;margin-top:1rem}
+  .nav a{font-size:.78rem;padding:.45rem .8rem;border:1px solid var(--line);border-radius:999px;color:#e7e1d8;transition:.25s}
+  .nav a:hover{border-color:var(--mustard);transform:translateY(-2px)}
+  .badge{position:absolute;left:1rem;top:1rem;z-index:30;display:flex;gap:.5rem;align-items:center;background:rgba(0,0,0,.5);border:1px solid var(--line);padding:.4rem .7rem;border-radius:10px;font-size:.78rem}
+  .no{background:var(--mustard);color:#1a1304;font-weight:800;border-radius:7px;padding:.1rem .45rem}
+  .sec{position:relative;border-bottom:1px solid rgba(255,255,255,.06)}
+  .add{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;padding:.6rem 1.1rem;border-radius:999px;font-weight:800;color:#fff;background:linear-gradient(135deg,var(--tomato),var(--tomato-2));box-shadow:0 8px 22px rgba(226,51,30,.4);transition:transform .25s cubic-bezier(.22,.61,.36,1)}
+  .add:active{transform:scale(.94)}
+
+  /* ============ A · 3D COVERFLOW ============ */
+  #a{min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:5rem 0 3rem;background:radial-gradient(120% 90% at 50% 30%,#1c1712,#0a0908 70%)}
+  #a h2{font-family:'Anton';text-transform:uppercase;font-size:clamp(1.8rem,1rem+4vw,3.2rem);text-align:center;margin-bottom:.3rem}
+  #a .sub{text-align:center;color:#9a948a;margin-bottom:2rem;font-size:.9rem}
+  .flow{position:relative;height:min(58vh,460px);perspective:1600px;margin:0 auto;width:100%;max-width:1100px}
+  .flow__stage{position:absolute;inset:0;transform-style:preserve-3d}
+  .cf{position:absolute;top:50%;left:50%;width:min(74vw,340px);height:min(50vh,420px);margin:0;border-radius:22px;overflow:hidden;
+     border:1px solid var(--line);box-shadow:0 30px 70px rgba(0,0,0,.6);transition:transform .6s cubic-bezier(.3,.8,.2,1),opacity .6s,filter .6s;will-change:transform;cursor:pointer;background:#16130f}
+  .cf img{width:100%;height:72%;object-fit:cover}
+  .cf .ov{position:absolute;left:0;right:0;bottom:0;height:42%;background:linear-gradient(0deg,#16130f 30%,transparent);padding:1rem;display:flex;flex-direction:column;justify-content:flex-end;gap:.4rem}
+  .cf h3{font-size:1.15rem}.cf .row{display:flex;justify-content:space-between;align-items:center}
+  .cf .pr{font-size:1.4rem;color:var(--mustard)}
+  .cf .add{opacity:0;transform:translateY(6px);transition:.3s}
+  .cf.active .add{opacity:1;transform:none}
+  .flow__btn{position:absolute;top:50%;transform:translateY(-50%);z-index:20;width:52px;height:52px;border-radius:50%;background:rgba(20,18,16,.8);backdrop-filter:blur(8px);border:1px solid var(--line);display:grid;place-items:center;font-size:1.4rem;transition:.25s}
+  .flow__btn:hover{background:var(--tomato);border-color:var(--tomato);transform:translateY(-50%) scale(1.08)}
+  .flow__btn.prev{left:max(1rem,calc(50% - 560px))}.flow__btn.next{right:max(1rem,calc(50% - 560px))}
+  .dots{display:flex;gap:.5rem;justify-content:center;margin-top:1.5rem}
+  .dots button{width:8px;height:8px;border-radius:99px;background:rgba(255,255,255,.25);transition:.3s}
+  .dots button.on{background:var(--tomato);width:26px}
+
+  /* ============ B · STICKY SCROLL STORY ============ */
+  #b{height:420vh;position:relative;background:#0a0908}
+  #b .pin{position:sticky;top:0;height:100svh;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:2rem;padding:0 clamp(1.5rem,5vw,5rem)}
+  #b .stack{position:relative;aspect-ratio:1/1;width:min(46vh,520px);justify-self:center;border-radius:30px;overflow:hidden;box-shadow:0 40px 90px rgba(0,0,0,.6)}
+  #b .stack img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.18);filter:blur(14px);transition:opacity .7s,transform .9s cubic-bezier(.22,.61,.36,1),filter .7s}
+  #b .stack img.on{opacity:1;transform:scale(1);filter:blur(0)}
+  #b .copy{max-width:520px}
+  #b .eyebrow{color:var(--mustard);font-weight:700;letter-spacing:.16em;text-transform:uppercase;font-size:.8rem}
+  #b .title{font-family:'Anton';text-transform:uppercase;font-size:clamp(2.2rem,1rem+6vw,5rem);line-height:.95;margin:.4rem 0;min-height:1.9em}
+  #b .desc{color:#cfc8bd;font-size:1.1rem;min-height:3.4em;transition:opacity .4s}
+  #b .pr{font-family:'Anton';font-size:3rem;color:#fff;margin-top:.8rem}
+  #b .pg{display:flex;gap:.5rem;margin-top:1.4rem}
+  #b .pg span{height:3px;width:34px;background:rgba(255,255,255,.2);border-radius:9px;overflow:hidden;position:relative}
+  #b .pg span i{position:absolute;inset:0;background:var(--tomato);transform-origin:left;transform:scaleX(0)}
+  #b .pg span.on i{transform:scaleX(1);transition:transform .4s}
+  #b .hint{position:absolute;bottom:1.2rem;left:0;right:0;text-align:center;color:#6f6960;font-size:.78rem}
+  @media(max-width:820px){#b .pin{grid-template-columns:1fr;justify-items:center;text-align:center}#b .copy{order:2}#b .stack{width:min(60vw,360px)}}
+
+  /* ============ C · CURTAIN REVEAL + CUSTOM CURSOR ============ */
+  #c{padding:clamp(3rem,6vw,6rem) clamp(1rem,4vw,3rem);cursor:none}
+  #c h2{font-family:'Anton';text-transform:uppercase;font-size:clamp(1.8rem,1rem+4vw,3.2rem);max-width:1200px;margin:0 auto 2rem}
+  #c .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:1.2rem;max-width:1200px;margin:0 auto}
+  .cur{position:relative;border-radius:20px;overflow:hidden;aspect-ratio:4/5;border:1px solid var(--line);cursor:none}
+  .cur .im{position:absolute;inset:0;overflow:hidden}
+  .cur .im img{width:108%;height:108%;object-fit:cover;transform:translate(-4%,-4%) scale(1.15);transition:transform .8s cubic-bezier(.22,.61,.36,1)}
+  .cur .curtain{position:absolute;inset:0;background:#0a0908;z-index:2;transform:scaleY(1);transform-origin:bottom;transition:transform .8s cubic-bezier(.7,0,.2,1)}
+  .cur.in .curtain{transform:scaleY(0)}
+  .cur.in .im img{transform:translate(0,0) scale(1)}
+  .cur .ov{position:absolute;inset:0;z-index:3;background:linear-gradient(0deg,rgba(0,0,0,.85),transparent 55%);padding:1.2rem;display:flex;flex-direction:column;justify-content:flex-end;gap:.3rem;opacity:0;transition:opacity .6s .2s}
+  .cur.in .ov{opacity:1}
+  .cur h3{font-size:1.3rem}.cur .row{display:flex;justify-content:space-between;align-items:center}
+  .cur .pr{font-size:1.5rem;color:var(--mustard)}
+  .cursor{position:fixed;top:0;left:0;z-index:90;pointer-events:none;width:14px;height:14px;border-radius:50%;background:var(--tomato);mix-blend-mode:difference;transform:translate(-50%,-50%);transition:width .25s,height .25s,background .25s}
+  .cursor.big{width:84px;height:84px;background:#fff}
+  .cursor .lbl{position:absolute;inset:0;display:grid;place-items:center;color:#000;font-weight:800;font-size:.72rem;opacity:0;transition:.2s}
+  .cursor.big .lbl{opacity:1}
+  @media(hover:none){#c{cursor:auto}.cur{cursor:auto}.cursor{display:none}}
+
+  /* ============ D · DUAL MARQUEE ============ */
+  #d{padding:clamp(3rem,6vw,6rem) 0;overflow:hidden;background:linear-gradient(180deg,#0a0908,#15110d)}
+  #d h2{font-family:'Anton';text-transform:uppercase;font-size:clamp(1.8rem,1rem+4vw,3.2rem);padding:0 clamp(1rem,4vw,3rem);margin-bottom:1.8rem}
+  .mq{display:flex;gap:1rem;width:max-content;margin-bottom:1rem}
+  .mq.r1{animation:mq1 38s linear infinite}.mq.r2{animation:mq2 44s linear infinite}
+  #d:hover .mq{animation-play-state:paused}
+  @keyframes mq1{to{transform:translateX(-50%)}}
+  @keyframes mq2{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+  .mi{flex:0 0 auto;display:flex;align-items:center;gap:1rem;padding:.7rem 1.1rem .7rem .7rem;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.03);transition:transform .35s cubic-bezier(.22,.61,.36,1),background .35s,border-color .35s}
+  .mi:hover{transform:scale(1.06);background:rgba(255,255,255,.08);border-color:var(--tomato)}
+  .mi img{width:56px;height:56px;border-radius:50%;object-fit:cover}
+  .mi b{font-size:1.05rem}.mi .pr{color:var(--mustard);font-size:1.2rem;margin-left:.4rem}
+  .mi small{display:block;color:#9a948a;font-size:.78rem}
+
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.cur .curtain{transform:scaleY(0)}.cur .im img{transform:none}.cur .ov,#b .stack img:first-child{opacity:1}}
+  .foot{padding:2.5rem 1.25rem 3.5rem;text-align:center;color:#8a847b;font-size:.85rem}.foot b{color:#cfc8bd}
+</style>
+</head>
+<body>
+
+<header class="head">
+  <div class="k">DON VITO · Speisekarte · Premium FX</div>
+  <h1>Bessere Animationen – 4 Konzepte</h1>
+  <p>Agentur-Niveau: 3D-Coverflow, Sticky-Scroll-Story, Curtain-Reveal mit Custom-Cursor, Dual-Marquee. Pfeile/Drag, scrollen & Maus bewegen.</p>
+  <nav class="nav"><a href="#a">A · 3D-Coverflow</a><a href="#b">B · Scroll-Story</a><a href="#c">C · Curtain + Cursor</a><a href="#d">D · Dual-Marquee</a></nav>
+</header>
+
+<!-- A -->
+<section class="sec" id="a">
+  <div class="badge"><span class="no">A</span> 3D-Coverflow</div>
+  <h2>Unsere Highlights</h2><div class="sub">Pfeile, Klick auf eine Karte oder ziehen · die Karten drehen im Raum</div>
+  <div class="flow"><div class="flow__stage" id="flow"></div>
+    <button class="flow__btn prev" id="cfPrev">‹</button><button class="flow__btn next" id="cfNext">›</button>
+  </div>
+  <div class="dots" id="cfDots"></div>
+</section>
+
+<!-- B -->
+<section class="sec" id="b">
+  <div class="badge"><span class="no">B</span> Sticky-Scroll-Story</div>
+  <div class="pin">
+    <div class="copy">
+      <div class="eyebrow" id="bEye">01 · Vom Spieß</div>
+      <div class="title" id="bTitle">Döner Teller</div>
+      <div class="desc" id="bDesc">Saftiges Kalbfleisch vom Drehspieß mit Pommes & Salat.</div>
+      <div class="pr"><span id="bPrice">9,90</span> €</div>
+      <div class="pg" id="bPg"></div>
+    </div>
+    <div class="stack" id="bStack"></div>
+    <div class="hint">↓ weiterscrollen – das Gericht wechselt cineastisch</div>
+  </div>
+</section>
+
+<!-- C -->
+<section class="sec" id="c">
+  <div class="badge"><span class="no">C</span> Curtain-Reveal + Custom-Cursor</div>
+  <h2>Frisch zubereitet</h2>
+  <div class="grid" id="cGrid"></div>
+</section>
+<div class="cursor" id="cursor"><span class="lbl">Bestellen</span></div>
+
+<!-- D -->
+<section class="sec" id="d">
+  <div class="badge"><span class="no">D</span> Dual-Marquee</div>
+  <h2>Beliebt bei Stammkunden</h2>
+  <div class="mq r1" id="mq1"></div>
+  <div class="mq r2" id="mq2"></div>
+</section>
+
+<footer class="foot"><p><b>DON VITO</b> — fiktives Demo · Bilder: Unsplash (Preview)</p><p style="margin-top:.4rem">Welches Konzept (A–D)? Dann finalisiere ich es Vercel-ready (Next.js + Framer Motion).</p></footer>
+
+<script>
+  const IMG=(id,w=800)=>`https://images.unsplash.com/${id}?auto=format&fit=crop&w=${w}&q=80`;
+  const M=[
+    {n:'Döner Teller',d:'Saftiges Kalbfleisch vom Drehspieß mit Pommes & Salat.',p:'9,90',img:'photo-1599487488170-d11ec9c172f0',e:'Vom Spieß'},
+    {n:'Smash Burger',d:'Doppelt gegrilltes Beef, geschmolzener Cheddar, knusprige Pommes.',p:'8,90',img:'photo-1568901346375-23c9450c58cd',e:'Vom Grill'},
+    {n:'Steinofen-Pizza',d:'Knuspriger Boden aus dem Holzofen, San-Marzano-Tomaten.',p:'7,50',img:'photo-1513104890138-7c749659a591',e:'Aus dem Ofen'},
+    {n:'Pizza Diavola',d:'Scharfe Salami, Peperoni und Chili für Feuer-Fans.',p:'9,50',img:'photo-1628840042765-356cda07504e',e:'Scharf'},
+    {n:'Dürüm Döner',d:'Im dünnen Yufka gerollt, frisch belegt mit Soße.',p:'7,50',img:'photo-1561758033-d89a9ad46330',e:'Gerollt'},
+    {n:'Familienpizza XXL',d:'40 cm zum Teilen – zwei Beläge frei wählbar.',p:'14,50',img:'photo-1565299624946-b28f40a0ae38',e:'Zum Teilen'},
+  ];
+
+  /* ---------- A: COVERFLOW ---------- */
+  (function(){
+    const stage=document.getElementById('flow'),dots=document.getElementById('cfDots');let idx=0;
+    M.forEach((it,i)=>{const c=document.createElement('article');c.className='cf';c.innerHTML=`<img src="${IMG(it.img)}" alt="${it.n}"><div class="ov"><h3>${it.n}</h3><div class="row"><span class="pr">${it.p} €</span><button class="add">+ Hinzufügen</button></div></div>`;c.addEventListener('click',()=>{if(i!==idx){idx=i;render();}});stage.appendChild(c);
+      const d=document.createElement('button');d.addEventListener('click',()=>{idx=i;render();});dots.appendChild(d);});
+    const cards=[...stage.children],dd=[...dots.children];
+    function render(){const sp=Math.min(window.innerWidth*0.42,300);cards.forEach((c,i)=>{const o=i-idx;const ao=Math.abs(o);
+      c.style.transform=`translate(-50%,-50%) translateX(${o*sp}px) translateZ(${-ao*160}px) rotateY(${o*-38}deg) scale(${o===0?1:.9})`;
+      c.style.opacity=ao>2?0:1;c.style.filter=o===0?'none':`brightness(.55)`;c.style.zIndex=String(20-ao);c.classList.toggle('active',o===0);c.style.pointerEvents=ao>2?'none':'auto';});
+      dd.forEach((d,i)=>d.classList.toggle('on',i===idx));}
+    document.getElementById('cfPrev').onclick=()=>{idx=(idx-1+M.length)%M.length;render();};
+    document.getElementById('cfNext').onclick=()=>{idx=(idx+1)%M.length;render();};
+    // drag
+    let sx=0,drag=false;stage.addEventListener('pointerdown',e=>{drag=true;sx=e.clientX;});
+    window.addEventListener('pointerup',e=>{if(!drag)return;drag=false;const dx=e.clientX-sx;if(dx<-40)idx=(idx+1)%M.length;else if(dx>40)idx=(idx-1+M.length)%M.length;render();});
+    window.addEventListener('resize',render);render();
+  })();
+
+  /* ---------- B: SCROLL STORY ---------- */
+  (function(){
+    const stack=document.getElementById('bStack');
+    M.forEach((it,i)=>{const im=document.createElement('img');im.src=IMG(it.img,900);im.alt=it.n;if(i===0)im.classList.add('on');stack.appendChild(im);});
+    const imgs=[...stack.children];
+    const pg=document.getElementById('bPg');M.forEach(()=>{const s=document.createElement('span');s.innerHTML='<i></i>';pg.appendChild(s);});
+    const pgs=[...pg.children];
+    const eye=document.getElementById('bEye'),title=document.getElementById('bTitle'),desc=document.getElementById('bDesc'),price=document.getElementById('bPrice');
+    const sec=document.getElementById('b');let cur=-1;
+    function set(i){if(i===cur)return;cur=i;const it=M[i];
+      imgs.forEach((im,k)=>im.classList.toggle('on',k===i));
+      pgs.forEach((s,k)=>s.classList.toggle('on',k<=i));
+      eye.textContent=String(i+1).padStart(2,'0')+' · '+it.e;title.textContent=it.n;desc.textContent=it.d;
+      // counter
+      const target=parseFloat(it.p.replace(',','.'));const t0=performance.now();(function tick(t){const k=Math.min(1,(t-t0)/700);price.textContent=(target*(1-Math.pow(1-k,3))).toFixed(2).replace('.',',');if(k<1)requestAnimationFrame(tick);})(t0);
+      title.style.opacity=0;desc.style.opacity=0;requestAnimationFrame(()=>{title.style.transition='opacity .4s';desc.style.transition='opacity .4s';title.style.opacity=1;desc.style.opacity=1;});}
+    function onScroll(){const r=sec.getBoundingClientRect();const total=sec.offsetHeight-window.innerHeight;const prog=Math.min(.999,Math.max(0,-r.top/total));set(Math.floor(prog*M.length));}
+    window.addEventListener('scroll',onScroll,{passive:true});set(0);onScroll();
+  })();
+
+  /* ---------- C: CURTAIN + CURSOR ---------- */
+  (function(){
+    const grid=document.getElementById('cGrid');
+    M.slice(0,6).forEach(it=>{const c=document.createElement('article');c.className='cur';c.innerHTML=`<div class="im"><img src="${IMG(it.img)}" alt="${it.n}"></div><div class="curtain"></div><div class="ov"><h3>${it.n}</h3><div class="row"><span>${it.d.split(',')[0]}</span><span class="pr">${it.p} €</span></div></div>`;
+      grid.appendChild(c);
+      c.addEventListener('mousemove',e=>{const r=c.getBoundingClientRect();const x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;c.querySelector('.im img').style.transform=`translate(${x*-16}px,${y*-16}px) scale(1.12)`;});
+      c.addEventListener('mouseleave',()=>{c.querySelector('.im img').style.transform='';});});
+    const io=new IntersectionObserver((es)=>{es.forEach((e,i)=>{if(e.isIntersecting){const els=[...grid.children];e.target.style.transitionDelay=(els.indexOf(e.target)%3*0.1)+'s';e.target.classList.add('in');io.unobserve(e.target);}})},{threshold:.25});
+    [...grid.children].forEach(n=>io.observe(n));
+    // custom cursor
+    const cur=document.getElementById('cursor');let cx=innerWidth/2,cy=innerHeight/2,tx=cx,ty=cy;
+    document.getElementById('c').addEventListener('mousemove',e=>{tx=e.clientX;ty=e.clientY;});
+    document.querySelectorAll('#c .cur').forEach(card=>{card.addEventListener('mouseenter',()=>cur.classList.add('big'));card.addEventListener('mouseleave',()=>cur.classList.remove('big'));});
+    (function loop(){cx+=(tx-cx)*.18;cy+=(ty-cy)*.18;cur.style.transform=`translate(${cx}px,${cy}px) translate(-50%,-50%)`;requestAnimationFrame(loop);})();
+  })();
+
+  /* ---------- D: DUAL MARQUEE ---------- */
+  (function(){
+    const row=arr=>arr.concat(arr).map(it=>`<div class="mi"><img src="${IMG(it.img,200)}" alt=""><div><b>${it.n}</b><small>${it.e}</small></div><span class="pr">${it.p} €</span></div>`).join('');
+    document.getElementById('mq1').innerHTML=row(M);
+    document.getElementById('mq2').innerHTML=row([...M].reverse());
+  })();
+</script>
+</body>
+</html>
