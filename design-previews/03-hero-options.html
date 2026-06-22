@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DON VITO – Hero: 5 Design- & Animations-Optionen</title>
+<!-- Preview: Google-Fonts-CDN + Unsplash nur zum Vergleichen. Production: next/font self-hosted, Bilder optimiert/lazy. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{--tomato:#E2331E;--tomato-2:#ff5a3c;--mustard:#F4A300;--neon:#C6FF00;--line:rgba(255,255,255,.12);--ok:#39d353}
+  html{scroll-behavior:smooth}
+  body{font-family:'Inter',system-ui,sans-serif;background:#0d0c0b;color:#fff;-webkit-font-smoothing:antialiased}
+  img{max-width:100%;height:auto;display:block}
+  a{text-decoration:none;color:inherit}
+  button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
+  ul{list-style:none}
+  .touch{min-height:44px;min-width:44px}
+  .ic{width:1.05em;height:1.05em;flex:0 0 auto;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;fill:none}
+
+  /* page chrome */
+  .page-head{padding:clamp(1.75rem,4vw,3rem) 1.25rem 1.25rem;text-align:center;background:radial-gradient(120% 100% at 50% 0%,#241f1a,#0d0c0b 70%);border-bottom:1px solid var(--line)}
+  .page-head .kicker{letter-spacing:.3em;text-transform:uppercase;font-size:.7rem;color:var(--mustard);font-weight:700}
+  .page-head h1{font-family:'Anton';font-weight:400;letter-spacing:.01em;font-size:clamp(1.5rem,1rem+3vw,2.4rem);margin:.45rem 0 .3rem;text-transform:uppercase}
+  .page-head p{max-width:62ch;margin:0 auto;color:#bdb6ad;font-size:clamp(.92rem,.9rem+.3vw,1.02rem)}
+  .legend{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;margin-top:1rem}
+  .legend a{font-size:.78rem;padding:.45rem .8rem;border:1px solid var(--line);border-radius:999px;color:#e7e1d8;transition:.25s}
+  .legend a:hover{border-color:var(--mustard);color:#fff;transform:translateY(-2px)}
+
+  /* compact shared nav (approved fusion, simplified) */
+  .mininav{position:absolute;top:0;left:0;right:0;z-index:30;display:flex;align-items:center;gap:1rem;padding:1rem clamp(1rem,3vw,2.25rem)}
+  .mininav .brand{display:flex;align-items:center;gap:.55rem;font-family:'Anton';font-weight:400;text-transform:uppercase;font-size:1.5rem;letter-spacing:.02em}
+  .mininav .brand .mk{width:34px;height:34px;border-radius:9px;overflow:hidden}
+  .mininav .brand .mk img{width:100%;height:100%;object-fit:cover}
+  .mininav .brand .vt{color:var(--tomato)}
+  .mininav .ml{display:flex;gap:.2rem;margin:0 auto}
+  .mininav .ml a{padding:.5rem .8rem;border-radius:9px;font-family:'Inter';font-weight:500;font-size:.9rem;color:#e9e3d9}
+  .mininav .ml a:hover{color:#fff}
+  .mininav .mo{display:flex;align-items:center;gap:.45rem;padding:.6rem 1rem;border-radius:999px;font-weight:800;color:#fff;background:linear-gradient(135deg,var(--tomato),var(--tomato-2));box-shadow:3px 3px 0 rgba(120,18,8,.9)}
+  @media(max-width:900px){.mininav .ml{display:none}}
+
+  .stage{position:relative;min-height:100svh;display:flex;flex-direction:column;overflow:hidden;border-bottom:1px solid rgba(255,255,255,.06)}
+  .stage__tag{position:absolute;left:1rem;bottom:1rem;z-index:40;display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);border:1px solid var(--line);padding:.55rem .8rem;border-radius:12px;font-size:.8rem;max-width:calc(100% - 2rem)}
+  .stage__tag b{color:#fff}.stage__tag span{color:#c9c2b8}
+  .opt-no{background:var(--mustard);color:#1a1304;font-weight:800;border-radius:8px;padding:.15rem .5rem}
+
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--ok);position:relative;flex:0 0 auto}
+  .dot::after{content:"";position:absolute;inset:-5px;border-radius:50%;border:2px solid var(--ok);opacity:.5;animation:pulse 2.6s cubic-bezier(.4,0,.2,1) infinite}
+  @keyframes pulse{0%{transform:scale(.7);opacity:.55}70%,100%{transform:scale(1.5);opacity:0}}
+
+  .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.85rem 1.4rem;border-radius:999px;font-weight:800;font-size:1rem;transition:transform .3s cubic-bezier(.22,.61,.36,1),box-shadow .3s}
+  .btn--order{color:#fff;background:linear-gradient(135deg,var(--tomato),var(--tomato-2));box-shadow:4px 4px 0 rgba(120,18,8,.9),0 10px 28px rgba(226,51,30,.4)}
+  .btn--order:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 rgba(120,18,8,.9),0 16px 36px rgba(226,51,30,.55)}
+  .btn--order:active{transform:translate(2px,2px);box-shadow:1px 1px 0 rgba(120,18,8,.9)}
+  .btn--ghost{color:#fff;border:1px solid var(--line);background:rgba(255,255,255,.05)}
+  .btn--ghost:hover{background:rgba(255,255,255,.12)}
+
+  .status{display:inline-flex;align-items:center;gap:.45rem;font-size:.85rem;color:#dcf3d8;background:rgba(57,211,83,.12);border:1px solid rgba(57,211,83,.3);padding:.5rem .8rem;border-radius:999px}
+  .usp{display:inline-flex;align-items:center;gap:.4rem;font-size:.8rem;color:#f0e7d8;background:rgba(244,163,0,.14);border:1px solid rgba(244,163,0,.35);padding:.45rem .8rem;border-radius:999px}
+
+  /* reveal */
+  .rv{opacity:0;transform:translateY(18px);transition:opacity .8s cubic-bezier(.22,.61,.36,1),transform .8s cubic-bezier(.22,.61,.36,1)}
+  .rv.in{opacity:1;transform:none}
+  .stg.in>*{opacity:1;transform:none}
+  .stg>*{opacity:0;transform:translateY(16px);transition:opacity .65s cubic-bezier(.22,.61,.36,1),transform .65s cubic-bezier(.22,.61,.36,1)}
+  .stg.in>*:nth-child(1){transition-delay:.05s}.stg.in>*:nth-child(2){transition-delay:.14s}.stg.in>*:nth-child(3){transition-delay:.23s}
+  .stg.in>*:nth-child(4){transition-delay:.32s}.stg.in>*:nth-child(5){transition-delay:.41s}.stg.in>*:nth-child(6){transition-delay:.5s}
+
+  h2.hl{font-family:'Anton';font-weight:400;text-transform:uppercase;line-height:.92;letter-spacing:.008em}
+  .hl em{color:var(--tomato);font-style:normal}
+
+  /* ============ HERO 1 — FULLSCREEN + GLAS-PANEL ============ */
+  #h1 .bg{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center;transform:scale(1.08);animation:ken 18s ease-in-out infinite alternate;
+    background-image:linear-gradient(90deg,rgba(13,12,11,.92),rgba(13,12,11,.45) 60%,rgba(13,12,11,.2)),url('https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=1800&q=80')}
+  @keyframes ken{to{transform:scale(1.16) translate(-1.5%,-1%)}}
+  #h1 .wrap{position:relative;z-index:5;margin:auto 0;padding:7rem clamp(1.25rem,4vw,4.5rem) 3rem;max-width:680px}
+  #h1 .panel{display:flex;flex-direction:column;gap:1.1rem;align-items:flex-start}
+  #h1 .row{display:flex;gap:.6rem;flex-wrap:wrap}
+  #h1 h2{font-size:clamp(2.6rem,1rem+9vw,5.6rem)}
+  #h1 p{color:#e4ded3;font-size:clamp(1.05rem,.95rem+.6vw,1.3rem);max-width:46ch}
+  #h1 .trust{display:flex;gap:1.2rem;flex-wrap:wrap;align-items:center;color:#cfc8bd;font-size:.85rem;padding-top:.4rem}
+  #h1 .trust b{color:#fff}
+  #h1 .stars{color:var(--mustard);letter-spacing:.1em}
+
+  /* ============ HERO 2 — SPLIT EDITORIAL + FLOATING CARDS ============ */
+  #h2s{background:linear-gradient(180deg,#16130f,#0d0c0b)}
+  #h2s .grid{position:relative;z-index:5;flex:1;display:grid;grid-template-columns:1.05fr .95fr;gap:1rem;align-items:center;padding:7rem clamp(1.25rem,4vw,3.5rem) 3rem}
+  #h2s .copy{display:flex;flex-direction:column;gap:1.1rem;align-items:flex-start}
+  #h2s h2{font-size:clamp(2.4rem,1rem+8vw,5rem)}
+  #h2s p{color:#d8d2c8;font-size:clamp(1rem,.95rem+.5vw,1.2rem);max-width:42ch}
+  #h2s .row{display:flex;gap:.6rem;flex-wrap:wrap}
+  #h2s .visual{position:relative;aspect-ratio:4/5;border-radius:24px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.5);clip-path:inset(0 0 0 0 round 24px)}
+  #h2s .visual img{width:100%;height:100%;object-fit:cover;transform:scale(1.05);animation:ken 20s ease-in-out infinite alternate}
+  #h2s .card{position:absolute;display:flex;align-items:center;gap:.6rem;background:rgba(20,18,16,.82);backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:14px;padding:.6rem .8rem;box-shadow:0 14px 30px rgba(0,0,0,.4)}
+  #h2s .card .t{width:42px;height:42px;border-radius:10px;overflow:hidden;flex:0 0 auto}
+  #h2s .card .t img{width:100%;height:100%;object-fit:cover;animation:none;transform:none}
+  #h2s .card b{font-size:.92rem}#h2s .card small{display:block;color:#a89f93;font-size:.74rem}
+  #h2s .card .pr{margin-left:.4rem;color:var(--mustard);font-weight:800;font-family:'Anton';font-size:1.1rem}
+  #h2s .c1{top:8%;left:-4%;animation:float1 7s ease-in-out infinite}
+  #h2s .c2{bottom:10%;right:-5%;animation:float2 8s ease-in-out infinite}
+  #h2s .c3{bottom:38%;left:-7%;animation:float1 9s ease-in-out infinite}
+  @keyframes float1{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  @keyframes float2{0%,100%{transform:translateY(0)}50%{transform:translateY(12px)}}
+  @media(max-width:880px){#h2s .grid{grid-template-columns:1fr;gap:2.5rem}#h2s .visual{aspect-ratio:16/12}#h2s .c1{left:2%}#h2s .c2{right:2%}#h2s .c3{display:none}}
+
+  /* ============ HERO 3 — BOLD TYPE / WORD-ROTATOR + FOOD MARQUEE ============ */
+  #h3{background:#0b0a09}
+  #h3 .bg{position:absolute;inset:0;z-index:0;opacity:.28;background-size:cover;background-position:center;
+    background-image:url('https://images.unsplash.com/photo-1561758033-d89a9ad46330?auto=format&fit=crop&w=1800&q=80')}
+  #h3 .bg::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 90% at 50% 30%,transparent,#0b0a09 75%)}
+  #h3 .wrap{position:relative;z-index:5;margin:auto;text-align:center;padding:7rem 1.25rem 2rem;max-width:1000px}
+  #h3 .mega{font-family:'Anton';font-weight:400;text-transform:uppercase;line-height:.9;font-size:clamp(3rem,1rem+13vw,9rem);letter-spacing:.01em}
+  #h3 .rot{color:var(--tomato);display:inline-block;min-width:5ch}
+  #h3 p{color:#d8d2c8;font-size:clamp(1.05rem,.95rem+.5vw,1.25rem);margin:1.1rem auto 0;max-width:48ch}
+  #h3 .row{display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;margin-top:1.4rem}
+  #h3 .marq{position:absolute;bottom:0;left:0;right:0;z-index:5;overflow:hidden;border-top:1px solid var(--line);background:rgba(13,12,11,.6);backdrop-filter:blur(6px)}
+  #h3 .marq__t{display:inline-flex;gap:1rem;padding:.8rem 0;animation:marq 30s linear infinite;will-change:transform}
+  #h3 .marq__t .chip{display:inline-flex;align-items:center;gap:.6rem;white-space:nowrap;padding:.4rem .7rem;border:1px solid var(--line);border-radius:999px;font-size:.85rem;color:#e7e1d8}
+  #h3 .marq__t .chip img{width:30px;height:30px;border-radius:50%;object-fit:cover}
+  @keyframes marq{to{transform:translateX(-50%)}}
+
+  /* ============ HERO 4 — BENTO GRID ============ */
+  #h4{background:linear-gradient(180deg,#15120e,#0d0c0b)}
+  #h4 .wrap{position:relative;z-index:5;flex:1;padding:6.5rem clamp(1.25rem,3vw,3rem) 3rem;display:flex;flex-direction:column;justify-content:center}
+  #h4 .bento{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:minmax(120px,auto);gap:1rem}
+  #h4 .cell{border-radius:20px;border:1px solid var(--line);overflow:hidden;position:relative;background:#16130f;transition:transform .4s cubic-bezier(.22,.61,.36,1),box-shadow .4s}
+  #h4 .cell:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(0,0,0,.45)}
+  #h4 .big{grid-column:span 2;grid-row:span 2;min-height:340px;display:flex;flex-direction:column;justify-content:flex-end;padding:1.6rem}
+  #h4 .big .img{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center;transform:scale(1.05);transition:transform .6s;background-image:linear-gradient(180deg,rgba(13,12,11,.2),rgba(13,12,11,.9)),url('https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=1200&q=80')}
+  #h4 .big:hover .img{transform:scale(1.1)}
+  #h4 .big>*{position:relative;z-index:1}
+  #h4 .big h2{font-size:clamp(2rem,1rem+4vw,3.2rem);margin-bottom:.4rem}
+  #h4 .big p{color:#e4ded3;margin-bottom:1rem;max-width:34ch}
+  #h4 .cell.pad{padding:1.2rem;display:flex;flex-direction:column;gap:.5rem;justify-content:center}
+  #h4 .cell .lbl{font-size:.74rem;text-transform:uppercase;letter-spacing:.12em;color:#9a948a}
+  #h4 .cell .big-num{font-family:'Anton';font-size:2rem;line-height:1}
+  #h4 .cell.photo{grid-column:span 2}
+  #h4 .cell.photo .img{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .6s}
+  #h4 .cell.photo:hover .img{transform:scale(1.08)}
+  #h4 .cell.photo .cap{position:absolute;left:1rem;bottom:1rem;z-index:1;background:rgba(0,0,0,.5);backdrop-filter:blur(6px);border:1px solid var(--line);padding:.4rem .7rem;border-radius:10px;font-weight:700;font-size:.9rem}
+  #h4 .stars{color:var(--mustard);letter-spacing:.1em}
+  @media(max-width:880px){#h4 .bento{grid-template-columns:repeat(2,1fr)}#h4 .big{grid-column:span 2}#h4 .cell.photo{grid-column:span 2}}
+  @media(max-width:520px){#h4 .bento{grid-template-columns:1fr}#h4 .big,#h4 .cell.photo{grid-column:span 1}}
+
+  /* ============ HERO 5 — ORDER-FIRST / CONVERSION ============ */
+  #h5{background:#0d0c0b}
+  #h5 .bg{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center;transition:opacity .6s;
+    background-image:linear-gradient(180deg,rgba(13,12,11,.55),rgba(13,12,11,.92)),url('https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=1800&q=80')}
+  #h5 .wrap{position:relative;z-index:5;margin:auto;width:min(760px,94vw);padding:7rem 0 3rem;text-align:center}
+  #h5 h2{font-size:clamp(2.2rem,1rem+7vw,4.4rem)}
+  #h5 p{color:#e4ded3;margin:.8rem auto 0;max-width:46ch}
+  #h5 .panel{margin-top:1.6rem;background:rgba(18,16,14,.78);backdrop-filter:blur(16px);border:1px solid var(--line);border-radius:22px;padding:1.2rem;box-shadow:0 24px 60px rgba(0,0,0,.45)}
+  #h5 .seg{display:inline-flex;background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:999px;padding:.25rem;gap:.25rem;margin-bottom:1rem}
+  #h5 .seg button{padding:.5rem 1.1rem;border-radius:999px;font-weight:700;font-size:.9rem;color:#cfc8bd;transition:.3s}
+  #h5 .seg button.on{background:#fff;color:#16130f}
+  #h5 .chips{display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center}
+  #h5 .chip{display:inline-flex;align-items:center;gap:.5rem;padding:.55rem .9rem;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.04);font-weight:600;font-size:.9rem;transition:transform .25s cubic-bezier(.22,.61,.36,1),border-color .25s,background .25s}
+  #h5 .chip:hover{transform:translateY(-2px);border-color:var(--tomato);background:rgba(226,51,30,.12)}
+  #h5 .chip img{width:26px;height:26px;border-radius:50%;object-fit:cover}
+  #h5 .meta{display:flex;gap:1.2rem;justify-content:center;flex-wrap:wrap;margin-top:1.1rem;color:#cfc8bd;font-size:.85rem}
+  #h5 .meta b{color:#fff}
+  #h5 .go{margin-top:1.2rem}
+
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+  .foot{padding:2.5rem 1.25rem 3.5rem;text-align:center;color:#8a847b;font-size:.85rem;background:#0d0c0b}
+  .foot b{color:#cfc8bd}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <g id="i-phone"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.1 9.9a16 16 0 0 0 6 6l1.27-1.26a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></g>
+  <g id="i-bag"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></g>
+  <g id="i-bike"><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="18.5" cy="17.5" r="3.5"/><path d="M15 17.5h-6l-2-7h11l-1 4M9 6h3l1 4"/></g>
+</defs></svg>
+
+<header class="page-head">
+  <div class="kicker">DON VITO · Sektion 2</div>
+  <h1>Hero – 5 Optionen</h1>
+  <p>Jede Variante nutzt die freigegebene Navbar-Linie (dunkel/Tomate/Anton), echte Food-Fotos und ein eigenes, realistisch eingestelltes Motion-Konzept. Alle enthalten: Headline, USP „0 % Aufschlag", Live-Status, Bestellen + Anrufen, Lieferinfo.</p>
+  <nav class="legend">
+    <a href="#h1">1 · Fullscreen + Glas-Panel</a>
+    <a href="#h2s">2 · Split Editorial</a>
+    <a href="#h3">3 · Bold Type / Rotator</a>
+    <a href="#h4">4 · Bento-Grid</a>
+    <a href="#h5">5 · Order-First</a>
+  </nav>
+</header>
+
+<!-- mini nav builder -->
+<template id="navtpl">
+  <nav class="mininav">
+    <a class="brand" href="#"><span class="mk"><img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=120&q=80" alt="Pizza"></span><span>DON <span class="vt">VITO</span></span></a>
+    <ul class="ml"><li><a href="#">Speisekarte</a></li><li><a href="#">Angebote</a></li><li><a href="#">Partyservice</a></li><li><a href="#">Über uns</a></li><li><a href="#">Kontakt</a></li></ul>
+    <a class="mo touch" href="#"><svg class="ic" viewBox="0 0 24 24"><use href="#i-bag"/></svg>Bestellen</a>
+  </nav>
+</template>
+
+<!-- ============ HERO 1 ============ -->
+<section class="stage" id="h1">
+  <div class="bg"></div>
+  <div class="wrap">
+    <div class="panel stg">
+      <span class="status"><span class="dot"></span>Jetzt geöffnet · Lieferung bis 23:00</span>
+      <h2 class="hl">Frisch.<br>Schnell.<br><em>Direkt bestellt.</em></h2>
+      <p>Döner vom Drehspieß, Pizza aus dem Steinofen – geliefert in ganz Münster. Ohne Lieferando-Aufschlag.</p>
+      <div class="row">
+        <a class="btn btn--order touch" href="#"><svg class="ic" viewBox="0 0 24 24"><use href="#i-bag"/></svg>Jetzt bestellen</a>
+        <a class="btn btn--ghost touch" href="tel:+4925198765 4"><svg class="ic" viewBox="0 0 24 24"><use href="#i-phone"/></svg>0251 / 98 76 54</a>
+      </div>
+      <div class="trust">
+        <span class="stars">★★★★★</span> <span><b>4,8</b> · 612 Google-Bewertungen</span>
+        <span>· <b>Halal</b></span><span>· <b>Lieferzeit ~30 Min</b></span>
+      </div>
+    </div>
+  </div>
+  <div class="stage__tag"><span class="opt-no">01</span><b>Fullscreen + Glas-Panel</b><span>· Ken-Burns-Zoom, Content-Stagger, Trust-Row, dualer CTA. Maximaler Appetit.</span></div>
+</section>
+
+<!-- ============ HERO 2 ============ -->
+<section class="stage" id="h2s">
+  <div class="grid">
+    <div class="copy stg">
+      <span class="usp">★ 0 % Aufschlag · provisionsfrei bestellen</span>
+      <h2 class="hl">Dein Lieblings-<br><em>Imbiss</em> in Münster</h2>
+      <p>Pizza, Döner, Burger &amp; Grill – frisch zubereitet, fair im Preis, schnell bei dir.</p>
+      <div class="row">
+        <a class="btn btn--order touch" href="#"><svg class="ic" viewBox="0 0 24 24"><use href="#i-bag"/></svg>Speisekarte &amp; Bestellen</a>
+        <a class="btn btn--ghost touch" href="tel:+4925198765 4"><svg class="ic" viewBox="0 0 24 24"><use href="#i-phone"/></svg>Anrufen</a>
+      </div>
+      <span class="status"><span class="dot"></span>Jetzt geöffnet · bis 23:00 Uhr</span>
+    </div>
+    <div class="visual rv">
+      <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=1100&q=80" alt="Food">
+      <div class="card c1"><span class="t"><img src="https://images.unsplash.com/photo-1561758033-d89a9ad46330?auto=format&fit=crop&w=120&q=80" alt="Döner"></span><span><b>Döner Teller</b><small>frisch vom Spieß</small></span><span class="pr">8,90 €</span></div>
+      <div class="card c2"><span class="t"><img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=120&q=80" alt="Pizza"></span><span><b>Familienpizza</b><small>XXL · 40 cm</small></span><span class="pr">14,50 €</span></div>
+      <div class="card c3"><span class="t"><img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=120&q=80" alt="Burger"></span><span><b>Smash-Burger</b><small>mit Pommes</small></span><span class="pr">9,90 €</span></div>
+    </div>
+  </div>
+  <div class="stage__tag"><span class="opt-no">02</span><b>Split Editorial + Floating Cards</b><span>· Clip-Path-Reveal des Bildes, sanft schwebende Produkt-Preis-Karten.</span></div>
+</section>
+
+<!-- ============ HERO 3 ============ -->
+<section class="stage" id="h3">
+  <div class="bg"></div>
+  <div class="wrap stg">
+    <div class="mega">Echter<br><span class="rot" id="rot">Döner</span><br>aus Münster</div>
+    <p>Pizza · Döner · Burger · Grill — frisch, schnell, direkt bestellt. Ohne Aufschlag.</p>
+    <div class="row">
+      <a class="btn btn--order touch" href="#"><svg class="ic" viewBox="0 0 24 24"><use href="#i-bag"/></svg>Jetzt bestellen</a>
+      <a class="btn btn--ghost touch" href="tel:+4925198765 4"><svg class="ic" viewBox="0 0 24 24"><use href="#i-phone"/></svg>Anrufen</a>
+    </div>
+  </div>
+  <div class="marq"><div class="marq__t" id="marqt"></div></div>
+  <div class="stage__tag"><span class="opt-no">03</span><b>Bold Type / Word-Rotator</b><span>· Riesen-Typo mit rotierendem Wort (Döner→Pizza→Burger), Food-Chip-Marquee unten.</span></div>
+</section>
+
+<!-- ============ HERO 4 ============ -->
+<section class="stage" id="h4">
+  <div class="wrap">
+    <div class="bento stg">
+      <div class="cell big">
+        <div class="img"></div>
+        <h2 class="hl">Hunger?<br><em>Wir liefern.</em></h2>
+        <p>Frisch zubereitet & schnell bei dir – ohne Lieferando-Aufschlag.</p>
+        <div><a class="btn btn--order touch" href="#"><svg class="ic" viewBox="0 0 24 24"><use href="#i-bag"/></svg>Jetzt bestellen</a></div>
+      </div>
+      <div class="cell pad">
+        <span class="status"><span class="dot"></span>Geöffnet</span>
+        <div><span class="lbl">Heute</span><div class="big-num">11–23<span style="font-size:.5em"> Uhr</span></div></div>
+      </div>
+      <div class="cell pad">
+        <span class="lbl">Bewertung</span>
+        <div class="big-num">4,8</div>
+        <span class="stars">★★★★★</span><span class="lbl">612 Google</span>
+      </div>
+      <div class="cell photo" style="grid-row:span 1">
+        <div class="img" style="background-image:url('https://images.unsplash.com/photo-1561758033-d89a9ad46330?auto=format&fit=crop&w=900&q=80')"></div>
+        <span class="cap">Döner-Spezial</span>
+      </div>
+      <div class="cell pad">
+        <span class="lbl">Lieferzeit</span><div class="big-num">~30<span style="font-size:.5em"> Min</span></div>
+        <span class="lbl">in ganz Münster</span>
+      </div>
+      <div class="cell pad">
+        <span class="lbl">Anrufen</span>
+        <a href="tel:+4925198765 4" style="display:inline-flex;align-items:center;gap:.4rem;font-weight:800"><svg class="ic" viewBox="0 0 24 24"><use href="#i-phone"/></svg>0251 / 98 76 54</a>
+        <span class="lbl">Mindestbestellwert 15 €</span>
+      </div>
+    </div>
+  </div>
+  <div class="stage__tag"><span class="opt-no">04</span><b>Bento-Grid</b><span>· Modulare Karten (Bild, Status, Rating, Lieferzeit), gestaffeltes Reveal, Hover-Lift & Bild-Zoom.</span></div>
+</section>
+
+<!-- ============ HERO 5 ============ -->
+<section class="stage" id="h5">
+  <div class="bg"></div>
+  <div class="wrap stg">
+    <span class="usp" style="margin:0 auto">★ 0 % Aufschlag · provisionsfrei</span>
+    <h2 class="hl" style="margin-top:1rem">Worauf hast du<br><em>Hunger?</em></h2>
+    <p>Wähle eine Kategorie und bestelle in unter 60 Sekunden.</p>
+    <div class="panel">
+      <div class="seg"><button class="on" data-mode="liefern">Liefern</button><button data-mode="abholen">Abholen</button></div>
+      <div class="chips">
+        <a class="chip" href="#"><img src="https://images.unsplash.com/photo-1561758033-d89a9ad46330?auto=format&fit=crop&w=120&q=80" alt="">Döner</a>
+        <a class="chip" href="#"><img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=120&q=80" alt="">Pizza</a>
+        <a class="chip" href="#"><img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=120&q=80" alt="">Burger</a>
+        <a class="chip" href="#"><img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=120&q=80" alt="">Pasta</a>
+        <a class="chip" href="#"><img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=120&q=80" alt="">Salate</a>
+      </div>
+      <div class="meta" id="meta">
+        <span><span class="dot" style="display:inline-block;vertical-align:-1px"></span> <b>Jetzt geöffnet</b></span>
+        <span>Lieferzeit <b>~30 Min</b></span>
+        <span>Mindestbestellwert <b>15 €</b></span>
+      </div>
+      <div class="go"><a class="btn btn--order touch" href="#" style="width:100%;justify-content:center"><svg class="ic" viewBox="0 0 24 24"><use href="#i-bike"/></svg>Bestellung starten</a></div>
+    </div>
+  </div>
+  <div class="stage__tag"><span class="opt-no">05</span><b>Order-First / Conversion</b><span>· Liefern/Abholen-Toggle, Kategorie-Quick-Picks, Lieferzeit & Mindestbestellwert direkt sichtbar.</span></div>
+</section>
+
+<footer class="foot">
+  <p><b>DON VITO</b> — fiktives Demo · Daten Platzhalter · Bilder: Unsplash (Preview)</p>
+  <p style="margin-top:.4rem">Sag die Nummer (1–5) oder einen Mix — dann baue ich die Hero final aus.</p>
+</footer>
+
+<script>
+  // inject mini nav into each hero stage
+  const tpl=document.getElementById('navtpl');
+  document.querySelectorAll('.stage').forEach(s=>s.prepend(tpl.content.cloneNode(true)));
+
+  // reveal
+  const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')})},{threshold:.18});
+  document.querySelectorAll('.rv,.stg').forEach(n=>io.observe(n));
+
+  // hero 3 word rotator
+  const words=['Döner','Pizza','Burger','Gyros','Grill'];let wi=0;
+  const rot=document.getElementById('rot');
+  setInterval(()=>{wi=(wi+1)%words.length;rot.style.transition='opacity .3s,transform .3s';rot.style.opacity='0';rot.style.transform='translateY(8px)';
+    setTimeout(()=>{rot.textContent=words[wi];rot.style.opacity='1';rot.style.transform='none';},300);},2200);
+
+  // hero 3 food marquee
+  const items=[['Döner Teller','photo-1561758033-d89a9ad46330'],['Pizza Margherita','photo-1574071318508-1cdbab80d002'],['Smash-Burger','photo-1568901346375-23c9450c58cd'],['Pasta al Forno','photo-1551183053-bf91a1d81141'],['Frische Salate','photo-1512621776951-a57141f2eefd'],['Steinofen-Pizza','photo-1513104890138-7c749659a591']];
+  const mt=document.getElementById('marqt');
+  const build=()=>items.map(([n,id])=>`<span class="chip"><img src="https://images.unsplash.com/${id}?auto=format&fit=crop&w=100&q=80" alt="">${n}</span>`).join('');
+  mt.innerHTML=build()+build();
+
+  // hero 5 segmented toggle
+  document.querySelectorAll('#h5 .seg button').forEach(b=>b.addEventListener('click',()=>{
+    document.querySelectorAll('#h5 .seg button').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+    const meta=document.getElementById('meta');
+    meta.innerHTML = b.dataset.mode==='abholen'
+      ? '<span><span class="dot" style="display:inline-block;vertical-align:-1px"></span> <b>Jetzt geöffnet</b></span><span>Abholbereit in <b>~15 Min</b></span><span>Kein Mindestbestellwert</span>'
+      : '<span><span class="dot" style="display:inline-block;vertical-align:-1px"></span> <b>Jetzt geöffnet</b></span><span>Lieferzeit <b>~30 Min</b></span><span>Mindestbestellwert <b>15 €</b></span>';
+  }));
+</script>
+</body>
+</html>
