@@ -490,8 +490,8 @@
 
   // navbar scroll
   const nav=document.getElementById('nav'),ticker=document.getElementById('ticker');
-  function onScroll(){const y=window.scrollY;nav.classList.toggle('solid',y>40);ticker.classList.toggle('hide',y>40);}
-  window.addEventListener('scroll',onScroll,{passive:true});onScroll();
+  function onNavScroll(){const y=window.scrollY;nav.classList.toggle('solid',y>40);ticker.classList.toggle('hide',y>40);}
+  window.addEventListener('scroll',onNavScroll,{passive:true});onNavScroll();
   // mobile menu
   const burger=document.getElementById('burger'),md=document.getElementById('menuDrawer'),ms=document.getElementById('menuScrim');
   function setMenu(o){burger.classList.toggle('x',o);md.classList.toggle('open',o);ms.classList.toggle('open',o);document.body.style.overflow=o?'hidden':'';}
@@ -514,63 +514,93 @@
 
 <script>
 (function(){
-  const wrap = document.getElementById('scrubWrap');
-  const video = document.getElementById('scrubVideo');
-  const progress = document.getElementById('scrubProgress');
-  const hint = document.getElementById('scrubHint');
+  const wrap     = document.getElementById('scrubWrap');
+  const video    = document.getElementById('scrubVideo');
+  const bar      = document.getElementById('scrubProgress');
+  const hint     = document.getElementById('scrubHint');
   if(!wrap || !video) return;
 
-  let duration = 0;
-  let locked = true;
-  let savedY = 0;
+  /* ── Scrub logic ── */
+  function scrub(){
+    const dur = video.duration;
+    if(!dur) return;
+    const rect      = wrap.getBoundingClientRect();
+    const scrollable = wrap.offsetHeight - window.innerHeight;
+    const scrolled  = Math.max(0, Math.min(scrollable, -rect.top));
+    const pct       = scrolled / scrollable;
 
-  video.addEventListener('loadedmetadata', () => { duration = video.duration; });
-
-  /* prevent scrolling past the scrub section until video is done */
-  function lockScroll(e){
-    if(!locked) return;
-    const rect = wrap.getBoundingClientRect();
-    /* only lock when sticky panel is fully covering viewport */
-    if(rect.top <= 0 && rect.bottom >= window.innerHeight){
-      e.preventDefault();
-    }
-  }
-  window.addEventListener('wheel', lockScroll, {passive:false});
-  window.addEventListener('touchmove', lockScroll, {passive:false});
-
-  function onScroll(){
-    if(!duration) return;
-    const rect = wrap.getBoundingClientRect();
-    const wrapH = wrap.offsetHeight;
-    const scrollable = wrapH - window.innerHeight;
-    const scrolled = Math.max(0, -rect.top);
-    const pct = Math.min(1, scrolled / scrollable);
-
-    video.currentTime = pct * duration;
-    progress.style.width = (pct * 100) + '%';
-
-    if(pct > 0.05) hint.classList.add('hidden');
-    else hint.classList.remove('hidden');
-
-    if(pct >= 1){
-      locked = false;
-    } else {
-      locked = true;
-    }
+    video.currentTime = pct * dur;
+    bar.style.width   = (pct * 100) + '%';
+    hint.style.opacity = pct > 0.04 ? '0' : '1';
   }
 
-  window.addEventListener('scroll', onScroll, {passive:true});
+  window.addEventListener('scroll', scrub, {passive:true});
 
-  /* touch scroll scrubbing */
-  let touchStartY = 0;
-  window.addEventListener('touchstart', e => { touchStartY = e.touches[0].clientY; }, {passive:true});
-  window.addEventListener('touchend', e => {
-    if(!locked) return;
-    const rect = wrap.getBoundingClientRect();
-    if(rect.top > 0 || rect.bottom < window.innerHeight) return;
-    const dy = touchStartY - e.changedTouches[0].clientY;
-    window.scrollBy(0, dy * 3);
-  }, {passive:true});
+  /* Run once after metadata so initial currentTime=0 is set */
+  video.addEventListener('loadedmetadata', scrub);
+
+  /* ── Scroll lock: hold page until video fully scrubbed ── */
+  let rafId = null;
+  let targetY = null;
+
+  function clampScroll(){
+    const dur = video.duration || 1;
+    const rect       = wrap.getBoundingClientRect();
+    const scrollable = wrap.offsetHeight - window.innerHeight;
+    const scrolled   = -rect.top;
+
+    /* If we're inside the scrub zone and video not finished → clamp */
+    if(scrolled > 0 && scrolled < scrollable && video.currentTime < dur - 0.05){
+      /* Allow scroll only within the scrub wrap – block going past it */
+      const maxY = wrap.offsetTop + scrollable;
+      if(window.scrollY > maxY){
+        window.scrollTo(0, maxY);
+      }
+    }
+  }
+
+  /* Override wheel to drive scroll position ourselves while inside scrub */
+  let wheelAcc = 0;
+  window.addEventListener('wheel', function(e){
+    const dur = video.duration || 1;
+    if(video.currentTime >= dur - 0.05) return; /* done → let browser handle */
+
+    const rect       = wrap.getBoundingClientRect();
+    const scrollable = wrap.offsetHeight - window.innerHeight;
+    const scrolled   = -rect.top;
+
+    /* Only intercept when scrub section is active */
+    if(scrolled < 0 || scrolled >= scrollable) return;
+
+    e.preventDefault();
+    wheelAcc += e.deltaY;
+
+    /* Throttle to rAF */
+    if(rafId) return;
+    rafId = requestAnimationFrame(function(){
+      rafId = null;
+      window.scrollBy(0, wheelAcc * 0.8);
+      wheelAcc = 0;
+    });
+  }, {passive:false});
+
+  /* Touch */
+  let ty0 = 0;
+  window.addEventListener('touchstart', e=>{ ty0 = e.touches[0].clientY; }, {passive:true});
+  window.addEventListener('touchmove', function(e){
+    const dur = video.duration || 1;
+    if(video.currentTime >= dur - 0.05) return;
+
+    const rect       = wrap.getBoundingClientRect();
+    const scrollable = wrap.offsetHeight - window.innerHeight;
+    const scrolled   = -rect.top;
+    if(scrolled < 0 || scrolled >= scrollable) return;
+
+    e.preventDefault();
+    const dy = ty0 - e.touches[0].clientY;
+    ty0 = e.touches[0].clientY;
+    window.scrollBy(0, dy);
+  }, {passive:false});
 })();
 </script>
 </body>
