@@ -248,7 +248,7 @@
 <!-- HERO + BURGER SCROLL SCRUBBER -->
 <section class="hero-scrub" id="start">
   <div class="hero-scrub__sticky">
-    <video class="hero-scrub__video" id="scrubVideo" muted playsinline preload="auto" src="design-previews/assets/burger-explode.mp4"></video>
+    <video class="hero-scrub__video" id="scrubVideo" muted playsinline preload="auto" src="design-previews/assets/burger-scrub.mp4"></video>
     <div class="hero-scrub__grade"></div>
     <div class="hero-scrub__grain"></div>
     <div class="hero-content" id="heroContent">
@@ -511,6 +511,8 @@
   video.addEventListener('canplaythrough', ()=>{ if(!ready) prime(); });
   video.load();
 
+  let curT = 0; // smoothed video time
+
   function tick(){
     if(!dur) return;
     const top        = section.getBoundingClientRect().top;
@@ -525,7 +527,15 @@
 
     /* Phase 2 (30–100%): scrub video, content hidden */
     const scrubP = pct < 0.30 ? 0 : (pct - 0.30) / 0.70;
-    if(ready && dur) video.currentTime = scrubP * dur;
+    const targetT = scrubP * dur;
+
+    /* Lerp towards target for buttery-smooth playback */
+    curT += (targetT - curT) * 0.18;
+    if(Math.abs(targetT - curT) < 0.002) curT = targetT;
+
+    if(ready && dur){
+      try{ video.currentTime = curT; }catch(e){}
+    }
     if(bar) bar.style.width = (scrubP * 100) + '%';
   }
 
