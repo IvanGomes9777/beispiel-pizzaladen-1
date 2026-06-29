@@ -1,6 +1,1 @@
-{
-  "cleanUrls": true,
-  "rewrites": [
-    { "source": "/", "destination": "/design-previews/00-gesamtseite.html" }
-  ]
-}
+{}
