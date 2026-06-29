@@ -513,9 +513,12 @@
   video.addEventListener('canplaythrough', ()=>{ if(!ready) prime(); });
   video.load();
 
-  let curT = 0; // smoothed video time
   const nav    = document.getElementById('nav');
   const ticker = document.getElementById('ticker');
+  const FPS    = 24;
+  let lastFrame = -1;
+  let seeking   = false;
+  video.addEventListener('seeked', ()=>{ seeking = false; });
 
   function tick(){
     if(!dur) return;
@@ -524,8 +527,7 @@
     const scrolled   = Math.max(0, Math.min(scrollable, -top));
     const pct        = scrolled / scrollable; // 0 → 1
 
-    /* Hide navbar + ticker while scrolling through the hero; show at very
-       top and once the hero is fully passed */
+    /* Hide navbar + ticker while scrolling through the hero */
     const hideChrome = pct > 0.02 && pct < 0.995;
     if(nav)    nav.classList.toggle('gone', hideChrome);
     if(ticker) ticker.classList.toggle('gone', hideChrome);
@@ -535,16 +537,16 @@
     content.style.opacity   = String(1 - fadeP);
     content.style.transform = 'translateY(' + (-fadeP * 50) + 'px)';
 
-    /* Phase 2 (30–100%): scrub video, content hidden */
+    /* Phase 2 (30–100%): scrub video on discrete frame boundaries */
     const scrubP = pct < 0.30 ? 0 : (pct - 0.30) / 0.70;
-    const targetT = scrubP * dur;
+    const totalFrames = Math.floor(dur * FPS);
+    const frame = Math.min(totalFrames, Math.round(scrubP * totalFrames));
 
-    /* Lerp towards target for buttery-smooth playback */
-    curT += (targetT - curT) * 0.18;
-    if(Math.abs(targetT - curT) < 0.002) curT = targetT;
-
-    if(ready && dur){
-      try{ video.currentTime = curT; }catch(e){}
+    /* Only seek when the target frame actually changes and no seek pending */
+    if(ready && frame !== lastFrame && !seeking){
+      lastFrame = frame;
+      seeking = true;
+      try{ video.currentTime = (frame + 0.5) / FPS; }catch(e){ seeking = false; }
     }
     if(bar) bar.style.width = (scrubP * 100) + '%';
   }
