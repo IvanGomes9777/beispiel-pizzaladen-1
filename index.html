@@ -200,6 +200,18 @@
   @media(max-width:480px){.fcols{grid-template-columns:1fr}}
 
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv,.dish{opacity:1;transform:none}.steps::before{transform:scaleX(1)}.hero h1 .line span{transform:none}.hero .sub,.trust,.feat,.hero .cta{opacity:1}}
+
+  /* ── BURGER SCROLL SCRUBBER ── */
+  .scrub-wrap{position:relative;height:400vh;background:#0a0704}
+  .scrub-sticky{position:sticky;top:0;height:100vh;overflow:hidden;display:flex;align-items:center;justify-content:center}
+  .scrub-video{width:100%;height:100%;object-fit:cover;display:block}
+  .scrub-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:clamp(2rem,5vh,4rem);pointer-events:none;background:linear-gradient(to top,rgba(0,0,0,.7) 0%,transparent 40%)}
+  .scrub-hint{color:#fff;font-size:.85rem;letter-spacing:.15em;text-transform:uppercase;opacity:1;transition:opacity .4s;display:flex;flex-direction:column;align-items:center;gap:.4rem}
+  .scrub-hint.hidden{opacity:0}
+  .scrub-arrow{width:20px;height:20px;border-right:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(45deg);animation:arrowBounce .9s ease-in-out infinite alternate}
+  @keyframes arrowBounce{from{transform:rotate(45deg) translate(0,0)}to{transform:rotate(45deg) translate(3px,3px)}}
+  .scrub-progress{position:absolute;bottom:0;left:0;height:3px;background:var(--tomato);width:0%;transition:width .05s linear}
+  @media(prefers-reduced-motion:reduce){.scrub-wrap{height:auto}.scrub-sticky{position:relative}}
 </style>
 </head>
 <body>
@@ -242,6 +254,20 @@
   <a href="#speisekarte">Speisekarte</a><a href="#bestellen">Bestellen</a><a href="#bestellen">Liefergebiet</a><a href="#kontakt">Kontakt</a>
   <a class="call" style="justify-content:center;margin-top:.5rem" href="tel:+4925198765 4"><svg class="ic" viewBox="0 0 24 24"><use href="#i-phone"/></svg>0251 / 98 76 54</a>
 </aside>
+
+<!-- BURGER SCROLL SCRUBBER -->
+<div class="scrub-wrap" id="scrubWrap">
+  <div class="scrub-sticky">
+    <video class="scrub-video" id="scrubVideo" muted playsinline preload="auto" src="design-previews/assets/burger-explode.mp4"></video>
+    <div class="scrub-overlay">
+      <div class="scrub-hint" id="scrubHint">
+        <span>Scroll</span>
+        <div class="scrub-arrow"></div>
+      </div>
+    </div>
+    <div class="scrub-progress" id="scrubProgress"></div>
+  </div>
+</div>
 
 <!-- HERO -->
 <header class="hero" id="start">
@@ -484,6 +510,68 @@
   document.getElementById('legal').innerHTML='<b>Allergene:</b> a = Gluten · c = Eier · d = Fisch · g = Milch · h = Schalenfrüchte. Vollständige Kennzeichnung gem. LMIV im Bestellsystem. Preise inkl. USt (Speisen 7 %, Getränke 19 %). Bilder &amp; Daten sind Platzhalter (Demo) – final: echte Food-Fotos &amp; Rechtstexte aus Generator/Anwalt.';
 
   renderCategory(active);setMode('liefern');
+</script>
+
+<script>
+(function(){
+  const wrap = document.getElementById('scrubWrap');
+  const video = document.getElementById('scrubVideo');
+  const progress = document.getElementById('scrubProgress');
+  const hint = document.getElementById('scrubHint');
+  if(!wrap || !video) return;
+
+  let duration = 0;
+  let locked = true;
+  let savedY = 0;
+
+  video.addEventListener('loadedmetadata', () => { duration = video.duration; });
+
+  /* prevent scrolling past the scrub section until video is done */
+  function lockScroll(e){
+    if(!locked) return;
+    const rect = wrap.getBoundingClientRect();
+    /* only lock when sticky panel is fully covering viewport */
+    if(rect.top <= 0 && rect.bottom >= window.innerHeight){
+      e.preventDefault();
+    }
+  }
+  window.addEventListener('wheel', lockScroll, {passive:false});
+  window.addEventListener('touchmove', lockScroll, {passive:false});
+
+  function onScroll(){
+    if(!duration) return;
+    const rect = wrap.getBoundingClientRect();
+    const wrapH = wrap.offsetHeight;
+    const scrollable = wrapH - window.innerHeight;
+    const scrolled = Math.max(0, -rect.top);
+    const pct = Math.min(1, scrolled / scrollable);
+
+    video.currentTime = pct * duration;
+    progress.style.width = (pct * 100) + '%';
+
+    if(pct > 0.05) hint.classList.add('hidden');
+    else hint.classList.remove('hidden');
+
+    if(pct >= 1){
+      locked = false;
+    } else {
+      locked = true;
+    }
+  }
+
+  window.addEventListener('scroll', onScroll, {passive:true});
+
+  /* touch scroll scrubbing */
+  let touchStartY = 0;
+  window.addEventListener('touchstart', e => { touchStartY = e.touches[0].clientY; }, {passive:true});
+  window.addEventListener('touchend', e => {
+    if(!locked) return;
+    const rect = wrap.getBoundingClientRect();
+    if(rect.top > 0 || rect.bottom < window.innerHeight) return;
+    const dy = touchStartY - e.changedTouches[0].clientY;
+    window.scrollBy(0, dy * 3);
+  }, {passive:true});
+})();
 </script>
 </body>
 </html>
